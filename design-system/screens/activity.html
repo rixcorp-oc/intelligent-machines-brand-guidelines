@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activity — intelligent-machines</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--background);color:var(--on-surface);font-size:14px;line-height:1.5}
+.layout{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:220px;background:var(--surface);border-right:1px solid var(--outline-variant);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-top{padding:18px 16px;border-bottom:1px solid var(--outline-variant)}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-icon{width:26px;height:26px;background:var(--gradient-primary);border-radius:var(--rounded);display:flex;align-items:center;justify-content:center}
+.logo-icon svg{width:14px;height:14px}
+.logo-name{font-size:12px;font-weight:600}
+.logo-sub{font-size:9px;color:var(--outline);letter-spacing:0.07em;text-transform:uppercase;margin-top:1px}
+.sidebar-nav{padding:12px 10px;flex:1}
+.nav-section-label{font-size:9.5px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--outline);padding:0 8px;margin:14px 0 5px}
+.nav-section-label:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:var(--rounded);font-size:12px;font-weight:500;color:var(--on-surface-variant);cursor:pointer;transition:all 150ms var(--ease);margin-bottom:1px;text-decoration:none}
+.nav-item:hover{color:var(--on-surface);background:var(--surface-container-high)}
+.nav-item.active{color:var(--on-surface);background:var(--surface-container-high)}
+.nav-item svg{width:14px;height:14px;flex-shrink:0}
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.topbar{height:50px;background:var(--surface-container);border-bottom:1px solid var(--outline-variant);display:flex;align-items:center;padding:0 24px;gap:12px;flex-shrink:0}
+.topbar-title{font-size:13px;font-weight:600}
+.topbar-spacer{flex:1}
+.search{display:flex;align-items:center;gap:7px;background:var(--background);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:5px 12px;width:220px}
+.search input{background:none;border:none;outline:none;font-size:12px;color:var(--on-surface);font-family:'Inter',sans-serif;width:100%}
+.search input::placeholder{color:var(--outline)}
+.search svg{width:12px;height:12px;color:var(--outline);flex-shrink:0}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:var(--rounded);font-size:12px;font-weight:600;cursor:pointer;transition:all 200ms var(--ease);border:none;font-family:'Inter',sans-serif}
+.btn-secondary{background:var(--surface-container);color:var(--on-surface);border:1px solid var(--outline-variant)}
+.btn-secondary:hover{background:var(--surface-container-high);border-color:var(--outline)}
+.btn-ghost{background:var(--surface);color:var(--on-surface-variant);border:none;padding:5px 10px}
+.btn-ghost:hover{color:var(--on-surface)}
+.filter-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:var(--rounded-full);font-size:11px;font-weight:500;cursor:pointer;transition:all 150ms var(--ease);border:1px solid var(--outline-variant)}
+.filter-chip:hover{border-color:var(--outline)}
+.filter-chip.on{background:rgba(37,99,255,0.12);border-color:var(--primary);color:var(--primary)}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:2px 8px;border-radius:var(--rounded-full)}
+.badge-dot{width:4px;height:4px;border-radius:50%}
+.ba{background:rgba(0,212,196,0.12);color:var(--secondary)}.ba .badge-dot{background:var(--secondary)}
+.br{background:rgba(37,99,255,0.12);color:var(--primary)}.br .badge-dot{background:var(--primary);animation:pulse 1.5s ease infinite}
+.bc{background:rgba(16,185,129,0.12);color:var(--success)}.bc .badge-dot{background:var(--success)}
+.bw{background:rgba(245,158,11,0.12);color:var(--warning)}.bw .badge-dot{background:var(--warning)}
+.be{background:rgba(239,68,68,0.12);color:var(--error)}.be .badge-dot{background:var(--error)}
+
+.body{flex:1;overflow-y:auto;display:flex;min-height:0}
+
+/* Main feed */
+.feed{flex:1;padding:24px 28px;overflow-y:auto;min-width:0}
+.feed-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.feed-title{font-size:18px;font-weight:700;letter-spacing:-0.02em}
+.filters{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+
+/* Timeline */
+.day-group{margin-bottom:32px}
+.day-label{font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--outline);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.day-label::after{content:'';flex:1;height:1px;background:var(--outline-variant)}
+
+.event{display:flex;gap:14px;margin-bottom:2px;position:relative}
+.event-line-col{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:28px}
+.event-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.event-line{width:1.5px;flex:1;min-height:12px;margin:3px 0}
+.event-card{flex:1;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);padding:13px 16px;margin-bottom:6px;transition:border-color 150ms var(--ease);cursor:pointer}
+.event-card:hover{border-color:var(--outline)}
+.event-card.approval{border-color:var(--warning);background:rgba(245,158,11,0.03)}
+.event-card.error{border-color:var(--error);background:rgba(239,68,68,0.03)}
+.event-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+.event-title{font-size:13px;font-weight:500;color:var(--on-surface);line-height:1.4}
+.event-title strong{font-weight:600}
+.event-time{font-size:10.5px;font-family:'JetBrains Mono',monospace;color:var(--outline);flex-shrink:0;margin-top:2px}
+.event-body{font-size:12px;color:var(--on-surface-variant);line-height:1.5}
+.event-meta{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.event-tag{font-size:10px;color:var(--outline);background:var(--surface-container-high);padding:2px 8px;border-radius:var(--rounded-sm);font-family:'JetBrains Mono',monospace}
+.event-code{font-family:'JetBrains Mono',monospace;font-size:10.5px;background:var(--background);border:1px solid var(--outline-variant);border-radius:var(--rounded-sm);padding:6px 10px;margin-top:8px;color:var(--on-surface-variant);line-height:1.6}
+.kw{color:var(--tertiary)}.str{color:var(--secondary)}.num{color:var(--primary)}.cm{color:var(--outline)}
+
+/* Approval card */
+.approval-actions{display:flex;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--outline-variant)}
+.approval-btn{padding:6px 14px;border-radius:var(--rounded);font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all 150ms var(--ease)}
+.approve-btn{background:rgba(16,185,129,0.12);color:var(--success);border:1px solid rgba(16,185,129,0.2)}
+.approve-btn:hover{background:rgba(16,185,129,0.2)}
+.reject-btn{background:rgba(239,68,68,0.08);color:var(--error);border:1px solid rgba(239,68,68,0.15)}
+.reject-btn:hover{background:rgba(239,68,68,0.15)}
+.view-btn{background:none;color:var(--on-surface-variant);border:1px solid var(--outline-variant)}
+.view-btn:hover{color:var(--on-surface);border-color:var(--outline)}
+
+/* Right panel */
+.detail-panel{width:300px;border-left:1px solid var(--outline-variant);background:var(--surface);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.panel-head{padding:16px;border-bottom:1px solid var(--outline-variant)}
+.panel-head-title{font-size:12px;font-weight:600;color:var(--on-surface);margin-bottom:2px}
+.panel-head-sub{font-size:11px;color:var(--outline)}
+.panel-section{padding:14px 16px;border-bottom:1px solid var(--outline-variant)}
+.panel-section-label{font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--outline);margin-bottom:10px}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
+.stat-row-label{font-size:12px;color:var(--on-surface-variant)}
+.stat-row-value{font-size:12px;font-weight:500;color:var(--on-surface)}
+.mini-bar{height:2px;border-radius:var(--rounded-full);background:var(--surface-container-high);margin-top:3px}
+.mini-fill{height:100%;border-radius:var(--rounded-full);background:var(--gradient-primary)}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round">
+            <circle cx="3" cy="8" r="1.5"/><circle cx="13" cy="4" r="1.5"/><circle cx="13" cy="12" r="1.5"/>
+            <path d="M4.5 8h3l2-4h1.5M7.5 8l2 4h1.5"/>
+          </svg>
+        </div>
+        <div><div class="logo-name">intelligent-machines</div><div class="logo-sub">Workspace</div></div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a class="nav-item" href="dashboard.html">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item active" href="activity.html">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 14l4-5 3 3 3-6 4 4"/></svg>
+        Activity
+      </a>
+      <div class="nav-section-label">Automation</div>
+      <a class="nav-item" href="workflow-builder.html">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="10" r="2"/><circle cx="16" cy="5" r="2"/><circle cx="16" cy="15" r="2"/><path d="M6 9.5l8-4.5M6 10.5l8 4.5"/></svg>
+        Workflows
+      </a>
+      <a class="nav-item" href="agent-detail.html">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="10" r="2.5"/><circle cx="16" cy="5" r="2.5"/><circle cx="16" cy="15" r="2.5"/><path d="M6.5 9L13.5 6M6.5 11L13.5 14"/></svg>
+        Agents
+      </a>
+      <div class="nav-section-label">Insights</div>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 14l4-5 3 3 3-6 4 4"/></svg>
+        Analytics
+      </a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">Activity</span>
+      <div class="topbar-spacer"></div>
+      <div class="search">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5"/><path d="M15 15l-3-3"/></svg>
+        <input type="text" placeholder="Search events…">
+      </div>
+      <button class="btn btn-secondary" style="font-size:11px">Export</button>
+    </div>
+
+    <div class="body">
+      <div class="feed">
+        <div class="feed-header">
+          <div class="feed-title">Activity Log</div>
+        </div>
+
+        <div class="filters">
+          <span class="filter-chip on">All events</span>
+          <span class="filter-chip" onclick="toggleChip(this)">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--primary)"></span>
+            Completions
+          </span>
+          <span class="filter-chip" onclick="toggleChip(this)">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--warning)"></span>
+            Approvals
+          </span>
+          <span class="filter-chip" onclick="toggleChip(this)">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--error)"></span>
+            Errors
+          </span>
+          <span class="filter-chip" onclick="toggleChip(this)">Email</span>
+          <span class="filter-chip" onclick="toggleChip(this)">Research</span>
+          <span class="filter-chip" onclick="toggleChip(this)">Admin</span>
+        </div>
+
+        <!-- Today -->
+        <div class="day-group">
+          <div class="day-label">Today — Wednesday 30 April</div>
+
+          <!-- Running event -->
+          <div class="event">
+            <div class="event-line-col">
+              <div class="event-dot" style="background:var(--primary);box-shadow:0 0 0 3px rgba(37,99,255,0.2)"></div>
+              <div class="event-line" style="background:var(--outline-variant)"></div>
+            </div>
+            <div class="event-card">
+              <div class="event-header">
+                <div class="event-title"><strong>Market Research</strong> — step 4 in progress</div>
+                <span class="event-time">09:34</span>
+              </div>
+              <div class="event-body">Summarise Agent is processing 12 competitor pages. 8 of 12 complete.</div>
+              <div class="event-meta">
+                <span class="badge br"><span class="badge-dot"></span>Running</span>
+                <span class="event-tag">workflow:market-research</span>
+                <span class="event-tag">agent:summarise</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Approval needed -->
+          <div class="event">
+            <div class="event-line-col">
+              <div class="event-dot" style="background:var(--warning)"></div>
+              <div class="event-line" style="background:var(--outline-variant)"></div>
+            </div>
+            <div class="event-card approval">
+              <div class="event-header">
+                <div class="event-title"><strong>Competitor Monitor</strong> — approval required before sending alert</div>
+                <span class="event-time">09:28</span>
+              </div>
+              <div class="event-body">The agent detected a significant pricing change on competitor.io — plans reduced by 30%. It wants to send a Slack alert to #strategy and create a task in Linear. <strong>Review before proceeding.</strong></div>
+              <div class="event-meta">
+                <span class="badge bw"><span class="badge-dot"></span>Awaiting approval</span>
+                <span class="event-tag">workflow:competitor-monitor</span>
+              </div>
+              <div class="event-code"><span class="cm">// Proposed action</span><br><span class="kw">send_slack</span>({ channel: <span class="str">"#strategy"</span>, message: <span class="str">"Pricing change detected..."</span> })<br><span class="kw">create_linear_task</span>({ title: <span class="str">"Review competitor pricing"</span>, priority: <span class="str">"high"</span> })</div>
+              <div class="approval-actions">
+                <button class="approval-btn approve-btn">Approve &amp; send</button>
+                <button class="approval-btn reject-btn">Reject</button>
+                <button class="approval-btn view-btn">View details</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email completed -->
+          <div class="event">
+            <div class="event-line-col">
+              <div class="event-dot" style="background:var(--success)"></div>
+              <div class="event-line" style="background:var(--outline-variant)"></div>
+            </div>
+            <div class="event-card">
+              <div class="event-header">
+                <div class="event-title"><strong>Email Engagement Agent</strong> — 3 emails processed, 1 lead routed</div>
+                <span class="event-time">09:31</span>
+              </div>
+              <div class="event-body">Classified james@acme.com as a qualified lead (score: 82). Draft reply generated. Contact created in HubSpot — pipeline: Inbound SMB.</div>
+              <div class="event-meta">
+                <span class="badge bc"><span class="badge-dot"></span>Completed</span>
+                <span class="event-tag">workflow:email-engagement</span>
+                <span class="event-tag">duration:7.2s</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Invoice completed -->
+          <div class="event">
+            <div class="event-line-col">
+              <div class="event-dot" style="background:var(--success)"></div>
+              <div class="event-line" style="background:var(--outline-variant)"></div>
+            </div>
+            <div class="event-card">
+              <div class="event-header">
+                <div class="event-title"><strong>Invoice Processing</strong> — 18 invoices filed</div>
+                <span class="event-time">09:18</span>
+              </div>
+              <div class="event-body">Extracted, categorised, and filed 18 invoices from email attachments. Total value: £14,240. All matched to existing suppliers in Xero.</div>
+              <div class="event-meta">
+                <span class="badge bc"><span class="badge-dot"></span>Completed</span>
+                <span class="event-tag">workflow:invoice-processing</span>
+                <span class="event-tag">duration:42s</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error event -->
+          <div class="event">
+            <div class="event-line-col">
+              <div class="event-dot" style="background:var(--error)"></div>
+              <div class="event-line" style="background:var(--outline-variant)"></div>
+            </div>
+            <div class="event-card error">
+              <div class="event-header">
+                <div class="event-title"><strong>Lead Qualification</strong> — CRM write failed, retrying</div>
+                <span class="event-time">09:07</span>
+              </div>
+              <div class="event-body">HubSpot API returned 429 (rate limit). Agent queued retry in 60 seconds. No data lost — action will resume automatically.</div>
+              <div class="event-meta">
+                <span class="badge be"><span class="badge-dot"></span>Error</span>
+                <span class="event-tag">error:HubSpot_429</span>
+                <span class="event-tag">auto-retry:60s</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lead qualification completed -->
+          <div class="event">
+            <div class="event-line-col">
+              <div class="event-dot" style="background:var(--success)"></div>
+            </div>
+            <div class="event-card">
+              <div class="event-header">
+                <div class="event-title"><strong>Lead Qualification</strong> — 5 new leads scored and routed</div>
+                <span class="event-time">09:09</span>
+              </div>
+              <div class="event-body">Retry succeeded. 5 contacts pushed to HubSpot. Top lead: sarah@growth.co (score: 91). Assigned to sales rep: Tom B.</div>
+              <div class="event-meta">
+                <span class="badge bc"><span class="badge-dot"></span>Completed</span>
+                <span class="event-tag">workflow:lead-qualification</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Yesterday -->
+        <div class="day-group">
+          <div class="day-label">Yesterday — Tuesday 29 April</div>
+
+          <div class="event">
+            <div class="event-line-col">
+              <div class="event-dot" style="background:var(--success)"></div>
+              <div class="event-line" style="background:var(--outline-variant)"></div>
+            </div>
+            <div class="event-card">
+              <div class="event-header">
+                <div class="event-title"><strong>Market Research</strong> — weekly report delivered</div>
+                <span class="event-time">09:41</span>
+              </div>
+              <div class="event-body">Competitor summary report sent to team@company.com. 7 competitors analysed, 3 significant changes detected (pricing × 2, new feature × 1).</div>
+              <div class="event-meta">
+                <span class="badge bc"><span class="badge-dot"></span>Completed</span>
+                <span class="event-tag">workflow:market-research</span>
+                <span class="event-tag">duration:4m12s</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="event">
+            <div class="event-line-col">
+              <div class="event-dot" style="background:var(--success)"></div>
+            </div>
+            <div class="event-card">
+              <div class="event-header">
+                <div class="event-title"><strong>Email Engagement</strong> — 22 emails processed, 4 leads routed</div>
+                <span class="event-time">17:46</span>
+              </div>
+              <div class="event-body">High-volume run after a product announcement email. 4 qualified inbound responses identified and escalated.</div>
+              <div class="event-meta">
+                <span class="badge bc"><span class="badge-dot"></span>Completed</span>
+                <span class="event-tag">workflow:email-engagement</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right detail panel -->
+      <div class="detail-panel">
+        <div class="panel-head">
+          <div class="panel-head-title">Today at a glance</div>
+          <div class="panel-head-sub">Wednesday, 30 April</div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-section-label">Event summary</div>
+          <div class="stat-row"><span class="stat-row-label">Total events</span><span class="stat-row-value">14</span></div>
+          <div class="stat-row"><span class="stat-row-label">Completions</span><span class="stat-row-value" style="color:var(--success)">11</span></div>
+          <div class="stat-row"><span class="stat-row-label">Running</span><span class="stat-row-value" style="color:var(--primary)">2</span></div>
+          <div class="stat-row"><span class="stat-row-label">Awaiting approval</span><span class="stat-row-value" style="color:var(--warning)">1</span></div>
+          <div class="stat-row"><span class="stat-row-label">Errors (auto-resolved)</span><span class="stat-row-value" style="color:var(--outline)">1</span></div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-section-label">Active workflows</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                <span style="font-size:12px;color:var(--on-surface-variant)">Email Engagement</span>
+                <span class="badge ba" style="font-size:9px;padding:1px 6px"><span class="badge-dot"></span>Active</span>
+              </div>
+              <div class="mini-bar"><div class="mini-fill" style="width:100%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                <span style="font-size:12px;color:var(--on-surface-variant)">Market Research</span>
+                <span class="badge br" style="font-size:9px;padding:1px 6px"><span class="badge-dot"></span>Running</span>
+              </div>
+              <div class="mini-bar"><div class="mini-fill" style="width:57%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                <span style="font-size:12px;color:var(--on-surface-variant)">Lead Qualification</span>
+                <span class="badge br" style="font-size:9px;padding:1px 6px"><span class="badge-dot"></span>Running</span>
+              </div>
+              <div class="mini-bar"><div class="mini-fill" style="width:30%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-section-label">Tasks completed</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="stat-row"><span class="stat-row-label">Emails processed</span><span class="stat-row-value">47</span></div>
+            <div class="stat-row"><span class="stat-row-label">Leads routed</span><span class="stat-row-value">6</span></div>
+            <div class="stat-row"><span class="stat-row-label">Invoices filed</span><span class="stat-row-value">18</span></div>
+            <div class="stat-row"><span class="stat-row-label">Research steps</span><span class="stat-row-value">12</span></div>
+          </div>
+        </div>
+        <div class="panel-section" style="border-bottom:none">
+          <div class="panel-section-label">Pending action</div>
+          <div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:var(--rounded);padding:12px">
+            <div style="font-size:12px;font-weight:500;color:var(--warning);margin-bottom:4px">Approval required</div>
+            <div style="font-size:11px;color:var(--on-surface-variant);line-height:1.5">Competitor Monitor wants to send a Slack alert and create a Linear task about a pricing change.</div>
+            <div style="display:flex;gap:6px;margin-top:10px">
+              <button style="flex:1;padding:5px 0;border-radius:var(--rounded-sm);font-size:11px;font-weight:600;cursor:pointer;background:rgba(16,185,129,0.12);color:var(--success);border:1px solid rgba(16,185,129,0.2)">Approve</button>
+              <button style="flex:1;padding:5px 0;border-radius:var(--rounded-sm);font-size:11px;font-weight:600;cursor:pointer;background:none;color:var(--outline);border:1px solid var(--outline-variant)">Dismiss</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleChip(el){
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+}
+</script>
+</body>
+</html>

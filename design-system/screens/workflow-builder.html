@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workflow Builder — intelligent-machines</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--background);color:var(--on-surface);font-size:14px;line-height:1.5;overflow:hidden}
+.layout{display:flex;height:100vh}
+
+/* Sidebar */
+.sidebar{width:220px;background:var(--surface);border-right:1px solid var(--outline-variant);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-top{padding:18px 16px;border-bottom:1px solid var(--outline-variant)}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-icon{width:26px;height:26px;background:var(--gradient-primary);border-radius:var(--rounded);display:flex;align-items:center;justify-content:center}
+.logo-icon svg{width:14px;height:14px}
+.logo-name{font-size:12px;font-weight:600}
+.logo-sub{font-size:9px;color:var(--outline);letter-spacing:0.07em;text-transform:uppercase;margin-top:1px}
+.sidebar-nav{padding:12px 10px;flex:1}
+.nav-section-label{font-size:9.5px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--outline);padding:0 8px;margin:14px 0 5px}
+.nav-section-label:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:var(--rounded);font-size:12px;font-weight:500;color:var(--on-surface-variant);cursor:pointer;transition:all 150ms var(--ease);margin-bottom:1px;text-decoration:none}
+.nav-item:hover{color:var(--on-surface);background:var(--surface-container-high)}
+.nav-item.active{color:var(--on-surface);background:var(--surface-container-high)}
+.nav-item svg{width:14px;height:14px;flex-shrink:0}
+
+/* Main area */
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{height:50px;background:var(--surface-container);border-bottom:1px solid var(--outline-variant);display:flex;align-items:center;padding:0 20px;gap:10px;flex-shrink:0}
+.topbar-title{font-size:13px;font-weight:600;color:var(--on-surface-variant)}
+.topbar-title span{color:var(--on-surface)}
+.topbar-spacer{flex:1}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:var(--rounded);font-size:12px;font-weight:600;cursor:pointer;transition:all 200ms var(--ease);border:none;font-family:'Inter',sans-serif}
+.btn-primary{background:var(--gradient-primary);color:#fff}
+.btn-primary:hover{opacity:0.9;box-shadow:0 4px 16px rgba(37,99,255,0.3)}
+.btn-secondary{background:var(--surface-container);color:var(--on-surface);border:1px solid var(--outline-variant)}
+.btn-secondary:hover{border-color:var(--outline);background:var(--surface-container-high)}
+.btn-ghost{background:var(--surface);color:var(--on-surface-variant);border:none}
+.btn-ghost:hover{color:var(--on-surface);background:var(--surface-container-high)}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--primary);animation:pulse 1.5s ease infinite;flex-shrink:0}
+.workflow-name-input{background:none;border:none;outline:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--on-surface);padding:3px 6px;border-radius:var(--rounded-sm);cursor:text}
+.workflow-name-input:focus{background:var(--surface-container-high)}
+
+/* Canvas area */
+.canvas-wrap{flex:1;display:flex;overflow:hidden}
+.node-panel{width:220px;border-right:1px solid var(--outline-variant);background:var(--surface);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.panel-head{padding:14px 16px;border-bottom:1px solid var(--outline-variant)}
+.panel-head-title{font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--outline)}
+.panel-search{margin:10px 12px 0;display:flex;align-items:center;gap:6px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:5px 10px}
+.panel-search input{background:none;border:none;outline:none;font-size:11px;color:var(--on-surface);font-family:'Inter',sans-serif;width:100%}
+.panel-search input::placeholder{color:var(--outline)}
+.panel-search svg{width:11px;height:11px;color:var(--outline);flex-shrink:0}
+.node-category{padding:10px 12px 6px}
+.node-cat-label{font-size:9.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--outline);margin-bottom:6px}
+.node-type{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--rounded);cursor:grab;transition:all 150ms var(--ease);border:1px solid transparent;margin-bottom:3px}
+.node-type:hover{background:var(--surface-container);border-color:var(--outline-variant)}
+.node-type:active{cursor:grabbing}
+.node-type-icon{width:24px;height:24px;border-radius:var(--rounded);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.node-type-icon svg{width:12px;height:12px}
+.node-type-name{font-size:11px;font-weight:500;color:var(--on-surface-variant)}
+.node-type-desc{font-size:10px;color:var(--outline)}
+
+/* Canvas */
+.canvas{flex:1;position:relative;background:var(--background);overflow:hidden;cursor:default}
+.canvas-grid{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.05) 1px,transparent 1px);background-size:24px 24px}
+.canvas-inner{position:absolute;top:0;left:0;width:100%;height:100%}
+
+/* SVG connectors */
+.connectors{position:absolute;inset:0;pointer-events:none}
+
+/* Nodes */
+.wf-node{position:absolute;background:var(--surface-container);border:1.5px solid var(--outline-variant);border-radius:var(--rounded-md);width:180px;cursor:grab;transition:box-shadow 150ms var(--ease),border-color 150ms var(--ease);user-select:none}
+.wf-node:hover{border-color:var(--outline);box-shadow:0 4px 20px rgba(0,0,0,0.5)}
+.wf-node.active{border-color:var(--primary);box-shadow:0 0 0 2px rgba(37,99,255,0.2),0 4px 20px rgba(0,0,0,0.5)}
+.wf-node.running{border-color:var(--primary);box-shadow:0 0 0 2px rgba(37,99,255,0.15),0 0 24px rgba(37,99,255,0.15)}
+.node-head{padding:10px 12px 8px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--outline-variant)}
+.node-head-icon{width:22px;height:22px;border-radius:var(--rounded-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.node-head-icon svg{width:11px;height:11px}
+.node-head-name{font-size:11px;font-weight:600;color:var(--on-surface);flex:1;min-width:0}
+.node-head-status{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.node-body{padding:8px 12px 10px}
+.node-desc{font-size:10px;color:var(--outline);line-height:1.4;margin-bottom:6px}
+.node-port-row{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--outline);margin-top:4px}
+.port-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid;flex-shrink:0}
+.port-in{border-color:var(--outline)}
+.port-out{border-color:var(--primary)}
+.port-active{border-color:var(--secondary);background:rgba(0,212,196,0.15)}
+
+/* Right panel — node inspector */
+.inspector{width:260px;border-left:1px solid var(--outline-variant);background:var(--surface);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.inspector-head{padding:14px 16px;border-bottom:1px solid var(--outline-variant);display:flex;align-items:center;justify-content:space-between}
+.inspector-head-title{font-size:12px;font-weight:600;color:var(--on-surface)}
+.inspector-close{background:none;border:none;cursor:pointer;color:var(--outline);padding:2px;border-radius:var(--rounded-sm);display:flex;align-items:center;justify-content:center}
+.inspector-close:hover{color:var(--on-surface)}
+.inspector-section{padding:14px 16px;border-bottom:1px solid var(--outline-variant)}
+.inspector-section-label{font-size:9.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--outline);margin-bottom:10px}
+.field{margin-bottom:10px}
+.field-label{font-size:11px;font-weight:500;color:var(--on-surface-variant);margin-bottom:4px}
+.field-input{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:7px 10px;font-size:11px;color:var(--on-surface);font-family:'Inter',sans-serif;outline:none;width:100%;transition:border-color 150ms var(--ease)}
+.field-input:focus{border-color:var(--primary)}
+.field-select{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:7px 10px;font-size:11px;color:var(--on-surface);font-family:'Inter',sans-serif;outline:none;width:100%;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%234B5580' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.field-textarea{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:7px 10px;font-size:11px;color:var(--on-surface);font-family:'JetBrains Mono',monospace;outline:none;width:100%;resize:none;line-height:1.6;transition:border-color 150ms var(--ease)}
+.field-textarea:focus{border-color:var(--primary)}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:2px 8px;border-radius:var(--rounded-full)}
+.badge-dot{width:4px;height:4px;border-radius:50%}
+.br{background:rgba(37,99,255,0.12);color:var(--primary)}.br .badge-dot{background:var(--primary);animation:pulse 1.5s ease infinite}
+.bg_{background:rgba(16,185,129,0.12);color:var(--success)}.bg_ .badge-dot{background:var(--success)}
+.ba{background:rgba(0,212,196,0.12);color:var(--secondary)}.ba .badge-dot{background:var(--secondary)}
+
+/* Toolbar overlay */
+.canvas-toolbar{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:4px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);padding:5px;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+.toolbar-btn{width:30px;height:30px;border-radius:var(--rounded);border:none;background:none;cursor:pointer;color:var(--on-surface-variant);display:flex;align-items:center;justify-content:center;transition:all 150ms var(--ease);font-size:11px;font-weight:600;font-family:'Inter',sans-serif}
+.toolbar-btn:hover{background:var(--surface-container-high);color:var(--on-surface)}
+.toolbar-btn.active{background:rgba(37,99,255,0.15);color:var(--primary)}
+.toolbar-divider{width:1px;height:20px;background:var(--outline-variant);margin:0 2px}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes flow{0%{stroke-dashoffset:24}100%{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round">
+            <circle cx="3" cy="8" r="1.5"/><circle cx="13" cy="4" r="1.5"/><circle cx="13" cy="12" r="1.5"/>
+            <path d="M4.5 8h3l2-4h1.5M7.5 8l2 4h1.5"/>
+          </svg>
+        </div>
+        <div><div class="logo-name">intelligent-machines</div><div class="logo-sub">Workspace</div></div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a class="nav-item" href="dashboard.html">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="activity.html">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 14l4-5 3 3 3-6 4 4"/></svg>
+        Activity
+      </a>
+      <div class="nav-section-label">Automation</div>
+      <a class="nav-item active" href="workflow-builder.html">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="10" r="2"/><circle cx="16" cy="5" r="2"/><circle cx="16" cy="15" r="2"/><path d="M6 9.5l8-4.5M6 10.5l8 4.5"/></svg>
+        Workflows
+      </a>
+      <a class="nav-item" href="agent-detail.html">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="10" r="2.5"/><circle cx="16" cy="5" r="2.5"/><circle cx="16" cy="15" r="2.5"/><path d="M6.5 9L13.5 6M6.5 11L13.5 14"/></svg>
+        Agents
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">Workflows / <span>Market Research</span></span>
+      <div class="status-dot"></div>
+      <span style="font-size:11px;color:var(--primary)">Running — step 4 of 7</span>
+      <div class="topbar-spacer"></div>
+      <button class="btn btn-ghost" style="font-size:11px;gap:5px">
+        <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="5" height="12" rx="1"/><rect x="11" y="4" width="5" height="12" rx="1"/></svg>
+        Pause
+      </button>
+      <button class="btn btn-secondary" style="font-size:11px">History</button>
+      <button class="btn btn-primary" style="font-size:11px">
+        <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 4v12M4 10h12"/></svg>
+        Add node
+      </button>
+    </div>
+
+    <div class="canvas-wrap">
+
+      <!-- Left panel: node types -->
+      <div class="node-panel">
+        <div class="panel-head"><div class="panel-head-title">Node Library</div></div>
+        <div class="panel-search">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5"/><path d="M15 15l-3-3"/></svg>
+          <input type="text" placeholder="Search nodes…">
+        </div>
+
+        <div class="node-category">
+          <div class="node-cat-label">Triggers</div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(245,158,11,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--warning)" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 6v5l3 2"/></svg>
+            </div>
+            <div><div class="node-type-name">Schedule</div><div class="node-type-desc">Time-based trigger</div></div>
+          </div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(37,99,255,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h7"/></svg>
+            </div>
+            <div><div class="node-type-name">Webhook</div><div class="node-type-desc">HTTP event trigger</div></div>
+          </div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(0,212,196,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="5" width="14" height="10" rx="1.5"/><path d="M3 8h14"/></svg>
+            </div>
+            <div><div class="node-type-name">Email Inbox</div><div class="node-type-desc">On new message</div></div>
+          </div>
+        </div>
+
+        <div class="node-category">
+          <div class="node-cat-label">Agents</div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(123,60,255,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--tertiary)" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="10" r="2.5"/><circle cx="16" cy="5" r="2.5"/><circle cx="16" cy="15" r="2.5"/><path d="M6.5 9L13.5 6M6.5 11L13.5 14"/></svg>
+            </div>
+            <div><div class="node-type-name">Research Agent</div><div class="node-type-desc">Web scrape + summarise</div></div>
+          </div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(37,99,255,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h7"/><path d="M15 12l2 2-2 2"/></svg>
+            </div>
+            <div><div class="node-type-name">Email Agent</div><div class="node-type-desc">Draft, send, route</div></div>
+          </div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(16,185,129,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--success)" stroke-width="1.5" stroke-linecap="round"><path d="M5 4h10v2l-3 3v5l-4 2V9L5 6V4z"/></svg>
+            </div>
+            <div><div class="node-type-name">Data Agent</div><div class="node-type-desc">Extract, transform</div></div>
+          </div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(0,212,196,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="8" r="3"/><path d="M5 17c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>
+            </div>
+            <div><div class="node-type-name">Lead Agent</div><div class="node-type-desc">Score, qualify, route</div></div>
+          </div>
+        </div>
+
+        <div class="node-category">
+          <div class="node-cat-label">Logic</div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(255,255,255,0.05)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--on-surface-variant)" stroke-width="1.5" stroke-linecap="round"><path d="M10 4l-6 6 6 6M10 4l6 6-6 6"/></svg>
+            </div>
+            <div><div class="node-type-name">Branch</div><div class="node-type-desc">Conditional split</div></div>
+          </div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(255,255,255,0.05)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--on-surface-variant)" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="2"/><path d="M4 10h4M12 10h4"/></svg>
+            </div>
+            <div><div class="node-type-name">Wait / Delay</div><div class="node-type-desc">Pause execution</div></div>
+          </div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(239,68,68,0.1)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--error)" stroke-width="1.5" stroke-linecap="round"><path d="M10 3L4 6v4c0 3.3 2.5 6.4 6 7 3.5-.6 6-3.7 6-7V6L10 3z"/></svg>
+            </div>
+            <div><div class="node-type-name">Approval Gate</div><div class="node-type-desc">Require human OK</div></div>
+          </div>
+        </div>
+
+        <div class="node-category">
+          <div class="node-cat-label">Outputs</div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(37,99,255,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"><path d="M3 5h14M3 9h14M3 13h8"/><path d="M13 11l4 4-4 4"/></svg>
+            </div>
+            <div><div class="node-type-name">Send Report</div><div class="node-type-desc">Email / Slack / Webhook</div></div>
+          </div>
+          <div class="node-type">
+            <div class="node-type-icon" style="background:rgba(16,185,129,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--success)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="5" width="14" height="10" rx="1.5"/><path d="M3 8h14"/><circle cx="6" cy="11.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <div><div class="node-type-name">Update CRM</div><div class="node-type-desc">Push data to records</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas -->
+      <div class="canvas" id="canvas">
+        <div class="canvas-grid"></div>
+
+        <svg class="connectors" id="connectors" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow-done" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="rgba(0,212,196,0.6)"/>
+            </marker>
+            <marker id="arrow-active" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="var(--primary)"/>
+            </marker>
+            <marker id="arrow-idle" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="var(--outline)"/>
+            </marker>
+          </defs>
+          <!-- Trigger → Scrape: done -->
+          <path id="c1" d="" stroke="rgba(0,212,196,0.5)" stroke-width="1.5" fill="none" stroke-dasharray="6 3" marker-end="url(#arrow-done)"/>
+          <!-- Scrape → Extract: done -->
+          <path id="c2" d="" stroke="rgba(0,212,196,0.5)" stroke-width="1.5" fill="none" stroke-dasharray="6 3" marker-end="url(#arrow-done)"/>
+          <!-- Extract → Summarise: running (animated) -->
+          <path id="c3" d="" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-dasharray="6 3" stroke-dashoffset="0" marker-end="url(#arrow-active)">
+            <animate attributeName="stroke-dashoffset" from="18" to="0" dur="0.8s" repeatCount="indefinite"/>
+          </path>
+          <!-- Summarise → Branch: idle -->
+          <path id="c4" d="" stroke="var(--outline)" stroke-width="1.5" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow-idle)"/>
+          <!-- Branch → Format: idle -->
+          <path id="c5" d="" stroke="var(--outline)" stroke-width="1.5" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow-idle)"/>
+          <!-- Branch → Alert: idle -->
+          <path id="c6" d="" stroke="var(--outline)" stroke-width="1.5" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow-idle)"/>
+          <!-- Format → Send: idle -->
+          <path id="c7" d="" stroke="var(--outline)" stroke-width="1.5" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow-idle)"/>
+        </svg>
+
+        <!-- Nodes -->
+        <div class="wf-node" id="n0" style="left:40px;top:160px">
+          <div class="node-head">
+            <div class="node-head-icon" style="background:rgba(245,158,11,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--warning)" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 6v5l3 2"/></svg>
+            </div>
+            <span class="node-head-name">Schedule</span>
+            <div class="node-head-status" style="background:var(--success)"></div>
+          </div>
+          <div class="node-body">
+            <div class="node-desc">Every Monday 9am</div>
+            <div class="node-port-row"><div class="port-dot port-active"></div><span>Out → trigger</span></div>
+          </div>
+        </div>
+
+        <div class="wf-node" id="n1" style="left:280px;top:90px">
+          <div class="node-head">
+            <div class="node-head-icon" style="background:rgba(123,60,255,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--tertiary)" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2"/></svg>
+            </div>
+            <span class="node-head-name">Web Scraper</span>
+            <div class="node-head-status" style="background:var(--success)"></div>
+          </div>
+          <div class="node-body">
+            <div class="node-desc">12 competitor URLs — HTML extracted</div>
+            <div class="node-port-row"><div class="port-dot port-in"></div><span>In</span></div>
+            <div class="node-port-row"><div class="port-dot port-active"></div><span>Out → raw HTML</span></div>
+          </div>
+        </div>
+
+        <div class="wf-node" id="n2" style="left:280px;top:270px">
+          <div class="node-head">
+            <div class="node-head-icon" style="background:rgba(16,185,129,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--success)" stroke-width="1.5" stroke-linecap="round"><path d="M5 4h10v2l-3 3v5l-4 2V9L5 6V4z"/></svg>
+            </div>
+            <span class="node-head-name">Data Extract</span>
+            <div class="node-head-status" style="background:var(--success)"></div>
+          </div>
+          <div class="node-body">
+            <div class="node-desc">Pricing, features, copy — structured JSON</div>
+            <div class="node-port-row"><div class="port-dot port-in"></div><span>In → raw HTML</span></div>
+            <div class="node-port-row"><div class="port-dot port-active"></div><span>Out → JSON</span></div>
+          </div>
+        </div>
+
+        <div class="wf-node running active" id="n3" style="left:510px;top:170px">
+          <div class="node-head">
+            <div class="node-head-icon" style="background:rgba(37,99,255,0.15)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"><path d="M3 14l4-5 3 3 3-6 4 4"/></svg>
+            </div>
+            <span class="node-head-name">Summarise Agent</span>
+            <div class="node-head-status" style="background:var(--primary);animation:pulse 1.5s ease infinite"></div>
+          </div>
+          <div class="node-body">
+            <div class="node-desc" style="color:var(--primary)">Running — 8/12 pages processed…</div>
+            <div class="node-port-row"><div class="port-dot port-in"></div><span>In → JSON</span></div>
+            <div class="node-port-row"><div class="port-dot port-out"></div><span>Out → summary</span></div>
+          </div>
+        </div>
+
+        <div class="wf-node" id="n4" style="left:750px;top:170px">
+          <div class="node-head">
+            <div class="node-head-icon" style="background:rgba(255,255,255,0.05)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--on-surface-variant)" stroke-width="1.5" stroke-linecap="round"><path d="M10 4l-6 6 6 6M10 4l6 6-6 6"/></svg>
+            </div>
+            <span class="node-head-name">Branch</span>
+            <div class="node-head-status" style="background:var(--outline)"></div>
+          </div>
+          <div class="node-body">
+            <div class="node-desc">If significant changes → Alert</div>
+            <div class="node-port-row"><div class="port-dot port-in"></div><span>In</span></div>
+            <div class="node-port-row"><div class="port-dot port-out"></div><span>Yes → Alert</span></div>
+            <div class="node-port-row"><div class="port-dot port-out"></div><span>No → Format</span></div>
+          </div>
+        </div>
+
+        <div class="wf-node" id="n5" style="left:980px;top:90px">
+          <div class="node-head">
+            <div class="node-head-icon" style="background:rgba(239,68,68,0.1)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--error)" stroke-width="1.5" stroke-linecap="round"><path d="M10 8v4M10 14h.01M10 3L4 6v4c0 3.3 2.5 6.4 6 7 3.5-.6 6-3.7 6-7V6L10 3z"/></svg>
+            </div>
+            <span class="node-head-name">Slack Alert</span>
+            <div class="node-head-status" style="background:var(--outline)"></div>
+          </div>
+          <div class="node-body">
+            <div class="node-desc">#research channel — significant change detected</div>
+          </div>
+        </div>
+
+        <div class="wf-node" id="n6" style="left:980px;top:260px">
+          <div class="node-head">
+            <div class="node-head-icon" style="background:rgba(37,99,255,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="3" width="12" height="14" rx="1.5"/><path d="M7 7h6M7 10h6M7 13h4"/></svg>
+            </div>
+            <span class="node-head-name">Format Report</span>
+            <div class="node-head-status" style="background:var(--outline)"></div>
+          </div>
+          <div class="node-body">
+            <div class="node-desc">Markdown → HTML email template</div>
+          </div>
+        </div>
+
+        <div class="wf-node" id="n7" style="left:1210px;top:170px">
+          <div class="node-head">
+            <div class="node-head-icon" style="background:rgba(0,212,196,0.12)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h7"/><path d="M15 12l2 2-2 2"/></svg>
+            </div>
+            <span class="node-head-name">Send Report</span>
+            <div class="node-head-status" style="background:var(--outline)"></div>
+          </div>
+          <div class="node-body">
+            <div class="node-desc">Email to team@company.com</div>
+          </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="canvas-toolbar">
+          <button class="toolbar-btn" title="Select">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 3l12 7-6 2-3 6L5 3z"/></svg>
+          </button>
+          <button class="toolbar-btn active" title="Pan">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10 4v12M4 10h12"/></svg>
+          </button>
+          <div class="toolbar-divider"></div>
+          <button class="toolbar-btn" title="Zoom out">−</button>
+          <span style="font-size:11px;color:var(--outline);padding:0 4px;min-width:36px;text-align:center">80%</span>
+          <button class="toolbar-btn" title="Zoom in">+</button>
+          <div class="toolbar-divider"></div>
+          <button class="toolbar-btn" title="Fit view">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Inspector panel -->
+      <div class="inspector">
+        <div class="inspector-head">
+          <span class="inspector-head-title">Summarise Agent</span>
+          <button class="inspector-close">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+          </button>
+        </div>
+        <div class="inspector-section">
+          <div class="inspector-section-label">Status</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span class="badge br"><span class="badge-dot"></span>Running</span>
+            <span style="font-size:11px;color:var(--outline)">Step 4 of 7</span>
+          </div>
+          <div style="height:3px;background:var(--surface-container-high);border-radius:var(--rounded-full);overflow:hidden">
+            <div style="width:57%;height:100%;background:var(--gradient-primary);border-radius:var(--rounded-full)"></div>
+          </div>
+          <div style="font-size:10px;color:var(--outline);margin-top:5px">8 of 12 pages summarised</div>
+        </div>
+        <div class="inspector-section">
+          <div class="inspector-section-label">Configuration</div>
+          <div class="field">
+            <div class="field-label">Agent name</div>
+            <input class="field-input" type="text" value="Summarise Agent">
+          </div>
+          <div class="field">
+            <div class="field-label">Model</div>
+            <select class="field-select">
+              <option>claude-sonnet-4-6</option>
+              <option>claude-opus-4-7</option>
+              <option>claude-haiku-4-5</option>
+            </select>
+          </div>
+          <div class="field">
+            <div class="field-label">System prompt</div>
+            <textarea class="field-textarea" rows="4">You are a market research analyst. Summarise the provided competitor page data into: key pricing, main features, and notable positioning. Be concise and factual.</textarea>
+          </div>
+        </div>
+        <div class="inspector-section">
+          <div class="inspector-section-label">Inputs</div>
+          <div style="display:flex;align-items:center;gap:6px;padding:7px 10px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);margin-bottom:6px">
+            <div style="width:7px;height:7px;border-radius:50%;background:var(--secondary);flex-shrink:0"></div>
+            <span style="font-size:11px;color:var(--on-surface-variant)">data</span>
+            <span style="font-size:10px;color:var(--outline);margin-left:auto">JSON[]</span>
+          </div>
+        </div>
+        <div class="inspector-section">
+          <div class="inspector-section-label">Outputs</div>
+          <div style="display:flex;align-items:center;gap:6px;padding:7px 10px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);margin-bottom:6px">
+            <div style="width:7px;height:7px;border-radius:50%;border:1.5px solid var(--primary);flex-shrink:0"></div>
+            <span style="font-size:11px;color:var(--on-surface-variant)">summary</span>
+            <span style="font-size:10px;color:var(--outline);margin-left:auto">string</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;padding:7px 10px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded)">
+            <div style="width:7px;height:7px;border-radius:50%;border:1.5px solid var(--primary);flex-shrink:0"></div>
+            <span style="font-size:11px;color:var(--on-surface-variant)">changes_detected</span>
+            <span style="font-size:10px;color:var(--outline);margin-left:auto">boolean</span>
+          </div>
+        </div>
+        <div class="inspector-section" style="border-bottom:none">
+          <div class="inspector-section-label">Recent runs</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0">
+              <span style="font-size:11px;color:var(--on-surface-variant)">Apr 28 · 9:02am</span>
+              <span class="badge bg_" style="font-size:9px;padding:1px 6px"><span class="badge-dot"></span>OK</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid var(--outline-variant)">
+              <span style="font-size:11px;color:var(--on-surface-variant)">Apr 21 · 9:01am</span>
+              <span class="badge bg_" style="font-size:9px;padding:1px 6px"><span class="badge-dot"></span>OK</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid var(--outline-variant)">
+              <span style="font-size:11px;color:var(--on-surface-variant)">Apr 14 · 9:03am</span>
+              <span class="badge bg_" style="font-size:9px;padding:1px 6px"><span class="badge-dot"></span>OK</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function cubicBezier(x1,y1,x2,y2){
+  return `M${x1},${y1} C${x1+80},${y1} ${x2-80},${y2} ${x2},${y2}`;
+}
+function getCenter(el){
+  const r=el.getBoundingClientRect();
+  const cr=document.getElementById('canvas').getBoundingClientRect();
+  return{x:r.left-cr.left+r.width/2,y:r.top-cr.top+r.height/2};
+}
+function getRightPort(el){
+  const r=el.getBoundingClientRect();
+  const cr=document.getElementById('canvas').getBoundingClientRect();
+  return{x:r.right-cr.left,y:r.top-cr.top+r.height/2};
+}
+function getLeftPort(el){
+  const r=el.getBoundingClientRect();
+  const cr=document.getElementById('canvas').getBoundingClientRect();
+  return{x:r.left-cr.left,y:r.top-cr.top+r.height/2};
+}
+function drawConnections(){
+  const pairs=[
+    ['n0','n1','c1'],['n0','n2','c2'],['n1','n3','c3'],['n2','n3',null],
+    ['n3','n4','c4'],['n4','n5','c5'],['n4','n6','c6'],['n5','n7',null],['n6','n7','c7']
+  ];
+  const ids=['c1','c2','c3','c4','c5','c6','c7'];
+  const connections=[
+    {from:'n0',to:'n1',id:'c1'},{from:'n0',to:'n2',id:'c2'},
+    {from:'n1',to:'n3',id:'c3'},{from:'n2',to:'n3',id:null},
+    {from:'n3',to:'n4',id:'c4'},{from:'n4',to:'n5',id:'c5'},
+    {from:'n4',to:'n6',id:'c6'},{from:'n6',to:'n7',id:'c7'}
+  ];
+  connections.forEach(({from,to,id})=>{
+    if(!id)return;
+    const el=document.getElementById(id);
+    if(!el)return;
+    const a=getRightPort(document.getElementById(from));
+    const b=getLeftPort(document.getElementById(to));
+    el.setAttribute('d',cubicBezier(a.x,a.y,b.x,b.y));
+  });
+}
+window.addEventListener('load',drawConnections);
+window.addEventListener('resize',drawConnections);
+</script>
+</body>
+</html>

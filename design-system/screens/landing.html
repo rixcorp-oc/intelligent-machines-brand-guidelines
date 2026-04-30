@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>intelligent-machines — Build intelligent workflows that run your business</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--background);color:var(--on-surface);font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;display:flex;align-items:center;padding:0 40px;border-bottom:1px solid var(--outline-variant);background:rgba(10,15,31,0.8);backdrop-filter:blur(12px)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{width:28px;height:28px;background:var(--gradient-primary);border-radius:var(--rounded);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-logo-icon svg{width:15px;height:15px}
+.nav-logo-name{font-size:13px;font-weight:600;color:var(--on-surface);letter-spacing:-0.01em}
+.nav-spacer{flex:1}
+.nav-links{display:flex;align-items:center;gap:28px;margin-right:28px}
+.nav-link{font-size:13px;color:var(--on-surface-variant);text-decoration:none;transition:color 150ms var(--ease)}
+.nav-link:hover{color:var(--on-surface)}
+.btn{display:inline-flex;align-items:center;gap:var(--rounded);padding:8px 18px;border-radius:var(--rounded);font-size:13px;font-weight:600;cursor:pointer;transition:all 200ms var(--ease);border:none;font-family:'Inter',sans-serif;text-decoration:none;letter-spacing:-0.01em}
+.btn-primary{background:var(--gradient-primary);color:#fff}
+.btn-primary:hover{opacity:0.9;box-shadow:0 4px 20px rgba(37,99,255,0.35)}
+.btn-secondary{background:var(--surface-container);color:var(--on-surface);border:1px solid var(--outline-variant)}
+.btn-secondary:hover{border-color:var(--outline);background:var(--surface-container-high)}
+.btn-lg{padding:13px 28px;font-size:15px;border-radius:var(--rounded-md)}
+.btn-ghost{background:var(--surface);color:var(--on-surface-variant);border:none;padding:8px 16px}
+.btn-ghost:hover{color:var(--on-surface)}
+
+/* SECTIONS */
+section{padding:100px 40px;max-width:1100px;margin:0 auto}
+
+/* HERO */
+.hero{padding-top:140px;padding-bottom:80px;text-align:center;position:relative}
+.hero-badge{display:inline-flex;align-items:center;gap:var(--rounded);background:rgba(37,99,255,0.08);border:1px solid rgba(37,99,255,0.2);border-radius:var(--rounded-full);padding:5px 14px 5px 8px;font-size:12px;color:var(--primary);font-weight:500;margin-bottom:28px}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--secondary)}
+.hero-headline{font-size:clamp(40px,6vw,72px);font-weight:700;letter-spacing:-0.04em;line-height:1.05;max-width:820px;margin:0 auto 22px}
+.grad-text{background:var(--gradient-flow);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(15px,2vw,19px);color:var(--on-surface-variant);max-width:520px;margin:0 auto 40px;line-height:1.65}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:60px}
+.hero-social{font-size:12px;color:var(--outline);margin-top:16px}
+.hero-social strong{color:var(--on-surface-variant)}
+
+/* Node diagram */
+.diagram{position:relative;max-width:800px;margin:0 auto;height:240px}
+.diagram svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* Agent node */
+.agent-node{position:absolute;background:var(--surface-container);border:1.5px solid var(--outline);border-radius:var(--rounded-md);padding:12px 16px;min-width:140px;box-shadow:0 4px 20px rgba(0,0,0,0.5);cursor:default}
+.agent-node.active{border-color:rgba(0,212,196,0.4);box-shadow:0 0 20px rgba(0,212,196,0.1),0 4px 20px rgba(0,0,0,0.5)}
+.agent-node.running{border-color:rgba(37,99,255,0.4);box-shadow:0 0 20px rgba(37,99,255,0.15),0 4px 20px rgba(0,0,0,0.5)}
+.an-icon{width:22px;height:22px;border-radius:var(--rounded-sm);display:flex;align-items:center;justify-content:center;margin-bottom:6px}
+.an-icon svg{width:11px;height:11px}
+.an-name{font-size:11px;font-weight:600;color:var(--on-surface)}
+.an-status{font-size:10px;color:var(--outline);margin-top:2px}
+.an-status.a{color:var(--secondary)}
+.an-status.r{color:var(--primary)}
+
+/* WHAT IT DOES */
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature-card{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-lg);padding:28px}
+.feature-icon{width:40px;height:40px;border-radius:var(--rounded-md);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.feature-icon svg{width:20px;height:20px}
+.feature-title{font-size:16px;font-weight:600;letter-spacing:-0.01em;margin-bottom:8px}
+.feature-body{font-size:14px;color:var(--on-surface-variant);line-height:1.65}
+
+/* SECTION HEADER */
+.sec-header{text-align:center;margin-bottom:56px}
+.sec-label{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px}
+.sec-label.teal{color:var(--secondary)}
+.sec-label.blue{color:var(--primary)}
+.sec-title{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-0.03em;line-height:1.1;margin-bottom:14px}
+.sec-sub{font-size:16px;color:var(--on-surface-variant);max-width:500px;margin:0 auto;line-height:1.65}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.steps::before{content:'';position:absolute;top:32px;left:12.5%;right:12.5%;height:1.5px;background:linear-gradient(90deg,var(--secondary),var(--primary),var(--tertiary));opacity:0.3}
+.step{padding:0 16px;text-align:center}
+.step-num{width:56px;height:56px;border-radius:50%;background:var(--surface-container);border:1.5px solid var(--outline);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative;z-index:1;font-size:13px;font-weight:700;color:var(--on-surface-variant)}
+.step-num.active{border-color:rgba(0,212,196,0.4);color:var(--secondary);box-shadow:0 0 0 4px rgba(0,212,196,0.06)}
+.step-title{font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-0.01em}
+.step-body{font-size:13px;color:var(--on-surface-variant);line-height:1.6}
+
+/* PRODUCT PREVIEW */
+.preview-wrap{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-lg);overflow:hidden;max-width:900px;margin:0 auto;box-shadow:0 24px 64px rgba(0,0,0,0.6)}
+.preview-bar{height:36px;background:var(--surface);border-bottom:1px solid var(--outline-variant);display:flex;align-items:center;padding:0 16px;gap:6px}
+.preview-dot{width:10px;height:10px;border-radius:50%}
+.preview-url{flex:1;text-align:center;font-size:11px;color:var(--outline);font-family:'JetBrains Mono',monospace}
+.preview-body{padding:0}
+
+/* Mini dashboard inside preview */
+.mini-layout{display:flex;height:340px}
+.mini-sidebar{width:160px;background:var(--surface);border-right:1px solid var(--outline-variant);padding:14px 10px;flex-shrink:0}
+.mini-logo{display:flex;align-items:center;gap:var(--rounded);padding:4px 6px;margin-bottom:14px}
+.mini-logo-dot{width:18px;height:18px;background:var(--gradient-primary);border-radius:4px;flex-shrink:0}
+.mini-logo-name{font-size:10px;font-weight:600;color:var(--on-surface)}
+.mini-nav-item{display:flex;align-items:center;gap:6px;padding:5px 7px;border-radius:var(--rounded);font-size:10px;font-weight:500;color:var(--outline);margin-bottom:1px}
+.mini-nav-item.a{color:var(--on-surface);background:var(--surface-container-high)}
+.mini-nav-item svg{width:11px;height:11px}
+.mini-main{flex:1;background:var(--background);padding:16px;overflow:hidden}
+.mini-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.mini-metric{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:8px 10px}
+.mini-metric-label{font-size:8px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--outline);margin-bottom:3px}
+.mini-metric-val{font-size:16px;font-weight:700;letter-spacing:-0.03em}
+.mini-metric-delta{font-size:8px;color:var(--secondary);margin-top:1px}
+.mini-grid2{display:grid;grid-template-columns:1fr 200px;gap:8px}
+.mini-card{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:10px 12px}
+.mini-card-head{font-size:9.5px;font-weight:600;color:var(--on-surface);margin-bottom:8px;display:flex;justify-content:space-between}
+.mini-card-head span{color:var(--outline);font-weight:400}
+.mini-table-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--outline-variant)}
+.mini-table-row:last-child{border-bottom:none}
+.mini-row-name{font-size:9px;color:var(--on-surface-variant);flex:1}
+.mini-badge{font-size:8px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;padding:1px 6px;border-radius:var(--rounded-full)}
+.mini-feed-item{display:flex;gap:6px;padding:5px 0;border-bottom:1px solid var(--outline-variant)}
+.mini-feed-item:last-child{border-bottom:none}
+.mini-feed-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.mini-feed-text{font-size:9px;color:var(--on-surface-variant);line-height:1.4}
+.mini-feed-time{font-size:8px;color:var(--outline);margin-top:2px}
+
+/* TRUST */
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.trust-card{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-lg);padding:28px;display:flex;flex-direction:column;gap:12px}
+.trust-icon{width:36px;height:36px;border-radius:var(--rounded);display:flex;align-items:center;justify-content:center}
+.trust-icon svg{width:18px;height:18px}
+.trust-title{font-size:15px;font-weight:600;letter-spacing:-0.01em}
+.trust-body{font-size:13px;color:var(--on-surface-variant);line-height:1.65}
+
+/* CTA SECTION */
+.cta-section{text-align:center;padding:80px 40px 120px}
+.cta-card{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-xl);padding:72px 40px;max-width:680px;margin:0 auto;position:relative;overflow:hidden}
+.cta-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(37,99,255,0.12) 0%,transparent 70%);pointer-events:none}
+.cta-headline{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-0.03em;line-height:1.1;margin-bottom:14px;position:relative}
+.cta-sub{font-size:16px;color:var(--on-surface-variant);margin-bottom:36px;line-height:1.65;position:relative}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;position:relative}
+
+/* FOOTER */
+footer{border-top:1px solid var(--outline-variant);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-size:12px;font-weight:600;color:var(--outline)}
+.footer-links{display:flex;gap:20px}
+.footer-link{font-size:12px;color:var(--outline);text-decoration:none;transition:color 150ms var(--ease)}
+.footer-link:hover{color:var(--on-surface-variant)}
+
+/* Divider */
+.section-divider{height:1px;background:var(--outline-variant);max-width:1100px;margin:0 auto}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes flow{0%{stroke-dashoffset:30}100%{stroke-dashoffset:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="3" cy="8" r="1.5"/><circle cx="13" cy="4" r="1.5"/><circle cx="13" cy="12" r="1.5"/>
+        <path d="M4.5 8h3l2-4h1.5M7.5 8l2 4h1.5"/>
+      </svg>
+    </div>
+    <span class="nav-logo-name">intelligent-machines</span>
+  </a>
+  <div class="nav-spacer"></div>
+  <div class="nav-links">
+    <a class="nav-link" href="#features">Product</a>
+    <a class="nav-link" href="#how-it-works">How it works</a>
+    <a class="nav-link" href="#preview">Preview</a>
+    <a class="nav-link" href="#">Pricing</a>
+    <a class="nav-link" href="#">Docs</a>
+  </div>
+  <a class="btn btn-secondary" href="#" style="font-size:12px;padding:6px 14px">Log in</a>
+  <a class="btn btn-primary" href="#" style="font-size:12px;padding:6px 14px;margin-left:8px">Start building</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="max-width:1100px">
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    Now in early access — limited to 500 businesses
+  </div>
+  <h1 class="hero-headline">
+    Build intelligent workflows<br>that <span class="grad-text">run your business</span>
+  </h1>
+  <p class="hero-sub">Autonomous agents for customer engagement, administration, and research. Composable, observable, and always under your control.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary btn-lg" href="dashboard.html">
+      Start building
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M10 4l6 6-6 6"/></svg>
+    </a>
+    <a class="btn btn-secondary btn-lg" href="workflow-builder.html">See how it works</a>
+  </div>
+
+  <!-- Agent flow diagram -->
+  <div class="diagram">
+    <svg viewBox="0 0 800 240" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <marker id="a1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="rgba(0,212,196,0.7)"/></marker>
+        <marker id="a2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="rgba(37,99,255,0.7)"/></marker>
+        <marker id="a3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="rgba(123,60,255,0.7)"/></marker>
+      </defs>
+
+      <!-- Connections -->
+      <path d="M140,80 C190,80 210,100 260,100" stroke="rgba(0,212,196,0.5)" stroke-width="1.5" stroke-dasharray="6 3" marker-end="url(#a1)">
+        <animate attributeName="stroke-dashoffset" from="18" to="0" dur="1s" repeatCount="indefinite"/>
+      </path>
+      <path d="M140,80 C190,80 210,170 260,170" stroke="rgba(0,212,196,0.4)" stroke-width="1.5" stroke-dasharray="6 3" marker-end="url(#a1)">
+        <animate attributeName="stroke-dashoffset" from="18" to="0" dur="1s" repeatCount="indefinite" begin="0.3s"/>
+      </path>
+      <path d="M400,100 C440,100 460,120 500,120" stroke="rgba(37,99,255,0.6)" stroke-width="1.5" stroke-dasharray="6 3" marker-end="url(#a2)">
+        <animate attributeName="stroke-dashoffset" from="18" to="0" dur="1s" repeatCount="indefinite" begin="0.5s"/>
+      </path>
+      <path d="M400,170 C440,170 460,150 500,140" stroke="rgba(37,99,255,0.5)" stroke-width="1.5" stroke-dasharray="6 3" marker-end="url(#a2)">
+        <animate attributeName="stroke-dashoffset" from="18" to="0" dur="1s" repeatCount="indefinite" begin="0.7s"/>
+      </path>
+      <path d="M640,130 C680,130 700,130 740,130" stroke="rgba(123,60,255,0.6)" stroke-width="1.5" stroke-dasharray="6 3" marker-end="url(#a3)">
+        <animate attributeName="stroke-dashoffset" from="18" to="0" dur="1s" repeatCount="indefinite" begin="1s"/>
+      </path>
+    </svg>
+
+    <!-- Trigger node -->
+    <div class="agent-node active" style="left:0;top:52px;animation:float 4s ease-in-out infinite">
+      <div class="an-icon" style="background:rgba(245,158,11,0.12)">
+        <svg viewBox="0 0 20 20" fill="none" stroke="var(--warning)" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 6v5l3 2"/></svg>
+      </div>
+      <div class="an-name">Schedule Trigger</div>
+      <div class="an-status a">Every 15 min</div>
+    </div>
+
+    <!-- Agent nodes -->
+    <div class="agent-node running" style="left:26%;top:68px;animation:float 4s ease-in-out infinite 0.5s">
+      <div class="an-icon" style="background:rgba(37,99,255,0.12)">
+        <svg viewBox="0 0 20 20" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h7"/><path d="M15 12l2 2-2 2"/></svg>
+      </div>
+      <div class="an-name">Email Agent</div>
+      <div class="an-status r">Running…</div>
+    </div>
+    <div class="agent-node active" style="left:26%;top:148px;animation:float 4s ease-in-out infinite 1s">
+      <div class="an-icon" style="background:rgba(0,212,196,0.12)">
+        <svg viewBox="0 0 20 20" fill="none" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="8" r="3"/><path d="M5 17c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>
+      </div>
+      <div class="an-name">Lead Agent</div>
+      <div class="an-status a">Active</div>
+    </div>
+
+    <!-- Middle agents -->
+    <div class="agent-node" style="left:52%;top:98px;animation:float 4s ease-in-out infinite 1.5s">
+      <div class="an-icon" style="background:rgba(16,185,129,0.12)">
+        <svg viewBox="0 0 20 20" fill="none" stroke="var(--success)" stroke-width="1.5" stroke-linecap="round"><path d="M5 4h10v2l-3 3v5l-4 2V9L5 6V4z"/></svg>
+      </div>
+      <div class="an-name">Data Agent</div>
+      <div class="an-status" style="color:var(--success)">Completed</div>
+    </div>
+
+    <!-- Output node -->
+    <div class="agent-node" style="right:0;top:108px;animation:float 4s ease-in-out infinite 2s">
+      <div class="an-icon" style="background:rgba(123,60,255,0.12)">
+        <svg viewBox="0 0 20 20" fill="none" stroke="var(--tertiary)" stroke-width="1.5" stroke-linecap="round"><path d="M3 5h14M3 9h14M3 13h8"/><path d="M13 11l4 4-4 4"/></svg>
+      </div>
+      <div class="an-name">Send Report</div>
+      <div class="an-status">Pending</div>
+    </div>
+  </div>
+
+  <p class="hero-social" style="margin-top:40px">Trusted by <strong>340+ small businesses</strong> · <strong>2.1M tasks automated</strong> this month</p>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- WHAT IT DOES -->
+<section id="features">
+  <div class="sec-header">
+    <div class="sec-label teal">What it does</div>
+    <h2 class="sec-title">Everything your business runs on,<br>handled automatically</h2>
+    <p class="sec-sub">Agents handle the work. You set the rules, review the results, and stay in control.</p>
+  </div>
+  <div class="three-col">
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(37,99,255,0.12)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"><path d="M4 7h16M4 11h16M4 15h8"/><path d="M18 13l3 3-3 3"/></svg>
+      </div>
+      <div class="feature-title">Customer Engagement</div>
+      <div class="feature-body">Monitor your inbox, classify inbound messages, draft personalised replies, score leads, and route hot prospects to your CRM — automatically, 24/7.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(0,212,196,0.12)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+      </div>
+      <div class="feature-title">Administration</div>
+      <div class="feature-body">Process invoices, extract data from documents, update spreadsheets, schedule meetings, and file everything in the right place without lifting a finger.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(123,60,255,0.12)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--tertiary)" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M8 11h6M11 8v6"/></svg>
+      </div>
+      <div class="feature-title">Research</div>
+      <div class="feature-body">Track competitors, monitor news, compile market summaries, and deliver weekly briefings — sourced, structured, and sent to you on a schedule.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="sec-header">
+    <div class="sec-label blue">How it works</div>
+    <h2 class="sec-title">From setup to running in minutes</h2>
+    <p class="sec-sub">No engineering team required. Build workflows visually, deploy agents, and let them work.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num active">1</div>
+      <div class="step-title">Define your workflow</div>
+      <div class="step-body">Connect nodes in the visual builder — triggers, agents, logic, and outputs.</div>
+    </div>
+    <div class="step">
+      <div class="step-num active">2</div>
+      <div class="step-title">Configure each agent</div>
+      <div class="step-body">Set the goal, inputs, and model. Add approval gates where human oversight matters.</div>
+    </div>
+    <div class="step">
+      <div class="step-num active">3</div>
+      <div class="step-title">Deploy and run</div>
+      <div class="step-body">Agents run on schedule or on demand. Every action is logged and explained.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-title">Review and refine</div>
+      <div class="step-body">See what each agent did, why, and what it produced. Adjust and improve over time.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PRODUCT PREVIEW -->
+<section id="preview" style="padding:80px 40px">
+  <div class="sec-header">
+    <div class="sec-label teal">Product preview</div>
+    <h2 class="sec-title">A real product, not a demo</h2>
+    <p class="sec-sub">Everything is observable, inspectable, and controllable from one place.</p>
+  </div>
+  <div class="preview-wrap">
+    <div class="preview-bar">
+      <div class="preview-dot" style="background:#FF5F57"></div>
+      <div class="preview-dot" style="background:#FEBC2E"></div>
+      <div class="preview-dot" style="background:#28C840"></div>
+      <span class="preview-url">app.intelligent-machines.io/dashboard</span>
+    </div>
+    <div class="preview-body">
+      <div class="mini-layout">
+        <div class="mini-sidebar">
+          <div class="mini-logo">
+            <div class="mini-logo-dot"></div>
+            <span class="mini-logo-name">intelligent-machines</span>
+          </div>
+          <div class="mini-nav-item a">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg>
+            Dashboard
+          </div>
+          <div class="mini-nav-item">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 14l4-5 3 3 3-6 4 4"/></svg>
+            Activity
+          </div>
+          <div style="height:1px;background:var(--outline-variant);margin:8px 6px"></div>
+          <div class="mini-nav-item">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="10" r="2"/><circle cx="16" cy="5" r="2"/><circle cx="16" cy="15" r="2"/><path d="M6 9.5l8-4.5M6 10.5l8 4.5"/></svg>
+            Workflows
+          </div>
+          <div class="mini-nav-item">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="10" r="2.5"/><circle cx="16" cy="5" r="2.5"/><circle cx="16" cy="15" r="2.5"/></svg>
+            Agents
+          </div>
+        </div>
+        <div class="mini-main">
+          <div style="font-size:11px;font-weight:700;letter-spacing:-0.02em;color:var(--on-surface);margin-bottom:10px">Good morning, Rick &nbsp;<span style="color:var(--outline);font-weight:400;font-size:9px">5 agents active</span></div>
+          <div class="mini-metrics">
+            <div class="mini-metric"><div class="mini-metric-label">Tasks</div><div class="mini-metric-val">342</div><div class="mini-metric-delta">↑18%</div></div>
+            <div class="mini-metric"><div class="mini-metric-label">Saved</div><div class="mini-metric-val">6.4h</div></div>
+            <div class="mini-metric"><div class="mini-metric-label">Agents</div><div class="mini-metric-val">5</div></div>
+            <div class="mini-metric"><div class="mini-metric-label">Rate</div><div class="mini-metric-val" style="font-size:12px">99.1%</div></div>
+          </div>
+          <div class="mini-grid2">
+            <div class="mini-card">
+              <div class="mini-card-head">Active Workflows <span>View all →</span></div>
+              <div class="mini-table-row">
+                <span class="mini-row-name">Email Engagement</span>
+                <span class="mini-badge" style="background:rgba(0,212,196,0.12);color:var(--secondary)">Active</span>
+              </div>
+              <div class="mini-table-row">
+                <span class="mini-row-name">Market Research</span>
+                <span class="mini-badge" style="background:rgba(37,99,255,0.12);color:var(--primary)">Running</span>
+              </div>
+              <div class="mini-table-row">
+                <span class="mini-row-name">Invoice Processing</span>
+                <span class="mini-badge" style="background:rgba(16,185,129,0.12);color:var(--success)">Done</span>
+              </div>
+              <div class="mini-table-row">
+                <span class="mini-row-name">Lead Qualification</span>
+                <span class="mini-badge" style="background:rgba(37,99,255,0.12);color:var(--primary)">Running</span>
+              </div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-card-head">Agent Activity</div>
+              <div class="mini-feed-item">
+                <div class="mini-feed-dot" style="background:var(--secondary)"></div>
+                <div><div class="mini-feed-text">Market Research — step 3 complete</div><div class="mini-feed-time">Just now</div></div>
+              </div>
+              <div class="mini-feed-item">
+                <div class="mini-feed-dot" style="background:var(--primary)"></div>
+                <div><div class="mini-feed-text">Email agent replied to 3 leads</div><div class="mini-feed-time">4 min ago</div></div>
+              </div>
+              <div class="mini-feed-item">
+                <div class="mini-feed-dot" style="background:var(--success)"></div>
+                <div><div class="mini-feed-text">18 invoices filed to Xero</div><div class="mini-feed-time">12 min ago</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- TRUST / PRINCIPLES -->
+<section>
+  <div class="sec-header">
+    <div class="sec-label blue">Built different</div>
+    <h2 class="sec-title">Automation you can actually trust</h2>
+    <p class="sec-sub">Not magic. Not a black box. Every decision is visible, logged, and explainable.</p>
+  </div>
+  <div class="trust-grid">
+    <div class="trust-card">
+      <div class="trust-icon" style="background:rgba(0,212,196,0.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="trust-title">Composable</div>
+      <div class="trust-body">Build workflows from modular agent blocks. Mix, match, and reuse components across different processes in your business.</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon" style="background:rgba(37,99,255,0.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"><path d="M3 14l4-5 3 3 3-6 4 4"/></svg>
+      </div>
+      <div class="trust-title">Observable</div>
+      <div class="trust-body">Every agent action is logged in plain language. You always see what ran, when, why, and what it produced. No hidden decisions.</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon" style="background:rgba(123,60,255,0.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--tertiary)" stroke-width="1.5" stroke-linecap="round"><path d="M12 3L4 7v5c0 4.4 3.4 8.5 8 9.3 4.6-.8 8-4.9 8-9.3V7L12 3z"/></svg>
+      </div>
+      <div class="trust-title">Reliable</div>
+      <div class="trust-body">Set approval gates for sensitive actions. Agents retry on failure, surface errors clearly, and never do more than you've authorised.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-card">
+    <div class="cta-bg"></div>
+    <h2 class="cta-headline">Ready to build your<br><span class="grad-text">digital workforce?</span></h2>
+    <p class="cta-sub">Join 340+ small businesses using intelligent-machines to automate the work that slows them down.</p>
+    <div class="cta-actions">
+      <a class="btn btn-primary btn-lg" href="dashboard.html">
+        Start building free
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M10 4l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn-secondary btn-lg" href="workflow-builder.html">See the product →</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">intelligent-machines</span>
+  <div class="footer-links">
+    <a class="footer-link" href="#">Product</a>
+    <a class="footer-link" href="#">Docs</a>
+    <a class="footer-link" href="#">Pricing</a>
+    <a class="footer-link" href="#">Security</a>
+    <a class="footer-link" href="#">Privacy</a>
+    <a class="footer-link" href="#">Terms</a>
+  </div>
+  <span style="font-size:12px;color:var(--outline)">© 2026 intelligent-machines</span>
+</footer>
+
+</body>
+</html>
