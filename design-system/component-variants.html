@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>intelligent-machines — Component Variants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link id="theme-css" rel="stylesheet" href="tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--background);color:var(--on-surface);font-size:15px;line-height:1.6}
+
+.page{max-width:1080px;margin:0 auto;padding:64px 48px}
+@media(max-width:700px){.page{padding:32px 16px}}
+
+/* Header */
+.page-header{margin-bottom:56px;padding-bottom:32px;border-bottom:1px solid var(--outline-variant)}
+.brand-mark{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.brand-icon{width:36px;height:36px;background:var(--gradient-primary);border-radius:var(--rounded);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-name{font-size:14px;font-weight:600;color:var(--on-surface)}
+.brand-label{font-size:11px;color:var(--outline);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px}
+.page-title{font-size:32px;font-weight:700;letter-spacing:-0.03em;margin-bottom:10px}
+.page-desc{font-size:15px;color:var(--on-surface-variant);max-width:560px;line-height:1.65}
+
+/* Section */
+.section{margin-bottom:80px}
+.section-header{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--outline-variant)}
+.section-title{font-size:20px;font-weight:600;letter-spacing:-0.02em;margin-bottom:6px}
+.section-desc{font-size:13px;color:var(--on-surface-variant)}
+.sub-label{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--outline);margin-bottom:14px;margin-top:28px}
+.sub-label:first-child{margin-top:0}
+hr.divider{border:none;border-top:1px solid var(--outline-variant);margin-bottom:56px}
+
+/* Controls bar */
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:14px 18px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);margin-bottom:24px}
+.controls label{font-size:12px;color:var(--on-surface-variant);display:flex;align-items:center;gap:8px}
+.controls input[type=range]{accent-color:var(--primary);width:100px}
+.ctrl-divider{width:1px;height:20px;background:var(--outline-variant);margin:0 4px}
+.ctrl-btn{font-size:11px;font-weight:600;font-family:'Inter',sans-serif;padding:3px 10px;border-radius:var(--rounded-sm);border:1px solid var(--outline-variant);background:transparent;color:var(--on-surface-variant);cursor:pointer;transition:all 120ms var(--ease)}
+.ctrl-btn:hover{border-color:var(--outline);color:var(--on-surface)}
+.ctrl-btn.active{background:var(--surface-container-high);border-color:var(--outline);color:var(--on-surface)}
+
+/* Variant grid */
+.variant-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.variant-wrap{display:flex;flex-direction:column;gap:8px}
+.variant-meta{font-size:11px;font-weight:600;letter-spacing:0.04em;color:var(--outline);text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+.variant-tag{background:var(--surface-container);padding:2px 8px;border-radius:var(--rounded-sm);font-size:10px;color:var(--on-surface-variant);text-transform:none;letter-spacing:0}
+.variant-hint{font-size:11px;color:var(--outline);margin-top:4px}
+
+/* Card base */
+.card{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);transition:all 150ms var(--ease);position:relative}
+.card-title{font-size:14px;font-weight:600;margin-bottom:4px;color:var(--on-surface)}
+.card-meta{font-size:12px;color:var(--on-surface-variant)}
+.card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--outline-variant)}
+
+/* Card variants */
+.card-flat{background:transparent;border-color:transparent}
+.card-flat:hover{background:var(--surface-container)}
+.card-outlined{}
+.card-outlined:hover{border-color:var(--outline);background:var(--surface-container-high)}
+.card-elevated{box-shadow:0 4px 16px rgba(0,0,0,0.45)}
+.card-elevated:hover{box-shadow:0 6px 24px rgba(0,0,0,0.55);transform:translateY(-1px)}
+.card-accent-stripe{border-top:3px solid transparent;border-image:linear-gradient(90deg,#00D4C4,#2563FF,#7B3CFF) 1;padding-top:calc(var(--p) - 3px)}
+.card-inset{background:var(--surface-container-low);border-color:var(--surface-container)}
+.card-horizontal{display:flex;align-items:center;gap:14px}
+
+/* Workflow node variants */
+.node{width:180px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);padding:10px 12px;position:relative}
+.node-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.node-icon{width:24px;height:24px;border-radius:var(--rounded-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(37,99,255,0.15)}
+.node-icon svg{width:13px;height:13px}
+.node-title{font-size:12px;font-weight:600;color:var(--on-surface);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.node-sub{font-size:11px;color:var(--on-surface-variant)}
+.node-port{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--outline);background:var(--surface-container);position:absolute;top:50%}
+.node-port-in{left:-5px;transform:translateY(-50%)}
+.node-port-out{right:-5px;transform:translateY(-50%)}
+.node-idle{}
+.node-running{border-color:rgba(37,99,255,0.5);box-shadow:0 0 0 3px rgba(37,99,255,0.12)}
+.node-running .node-title{color:var(--primary)}
+.node-running .node-port-out{background:var(--primary);border-color:var(--primary);animation:portpulse 1.5s ease infinite}
+.node-completed .node-port-out{background:var(--success);border-color:var(--success)}
+.node-error{border-color:rgba(239,68,68,0.5);box-shadow:0 0 0 3px rgba(239,68,68,0.12)}
+.node-error .node-title{color:var(--error)}
+.node-trigger .node-icon{background:rgba(0,212,196,0.15)}
+.node-trigger .node-icon svg{color:var(--secondary)}
+.node-action .node-icon{background:rgba(37,99,255,0.15)}
+.node-action .node-icon svg{color:var(--primary)}
+.node-research .node-icon{background:rgba(123,60,255,0.15)}
+.node-research .node-icon svg{color:var(--tertiary)}
+@keyframes portpulse{0%,100%{box-shadow:0 0 0 0 rgba(37,99,255,0.5)}50%{box-shadow:0 0 0 4px rgba(37,99,255,0)}}
+
+/* Connector */
+.connector{height:2px;background:var(--outline-variant);border-radius:1px;position:relative;overflow:hidden}
+.connector.live{background:linear-gradient(90deg,#00D4C4,#2563FF,#7B3CFF);background-size:200% 100%;animation:flow 1.8s linear infinite}
+@keyframes flow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+
+/* Button variants */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--rounded);font-size:13px;font-weight:600;cursor:pointer;transition:all 200ms cubic-bezier(0.16,1,0.3,1);border:none;font-family:'Inter',sans-serif;letter-spacing:-0.01em;white-space:nowrap}
+.btn-primary{background:var(--gradient-primary);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.4)}
+.btn-primary:hover{opacity:0.9;box-shadow:0 4px 16px rgba(37,99,255,0.35)}
+.btn-primary:active{transform:scale(0.98)}
+.btn-secondary{background:var(--surface-container);color:var(--on-surface);border:1px solid var(--outline)}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.04)}
+.btn-ghost{background:transparent;color:var(--on-surface-variant);border:none}
+.btn-ghost:hover{color:var(--on-surface);background:var(--surface-container-high)}
+.btn-destructive{background:transparent;color:var(--error);border:1px solid rgba(239,68,68,0.3)}
+.btn-destructive:hover{background:rgba(239,68,68,0.08);border-color:var(--error)}
+.btn-sm{padding:5px 12px;font-size:12px}
+.btn-lg{padding:12px 24px;font-size:15px}
+.btn-icon{padding:7px;width:32px;height:32px;justify-content:center}
+.btn-icon-sm{padding:5px;width:26px;height:26px;justify-content:center}
+.btn:disabled{opacity:0.4;cursor:not-allowed;pointer-events:none}
+
+/* Badge variants */
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:var(--rounded-full);white-space:nowrap}
+.badge-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.badge-active{background:rgba(0,212,196,0.12);color:var(--secondary)}
+.badge-active .badge-dot{background:var(--secondary)}
+.badge-running{background:rgba(37,99,255,0.12);color:var(--primary)}
+.badge-running .badge-dot{background:var(--primary);animation:bpulse 1.5s ease infinite}
+.badge-completed{background:rgba(16,185,129,0.12);color:var(--success)}
+.badge-completed .badge-dot{background:var(--success)}
+.badge-paused{background:rgba(245,158,11,0.12);color:var(--warning)}
+.badge-paused .badge-dot{background:var(--warning)}
+.badge-error{background:rgba(239,68,68,0.12);color:var(--error)}
+.badge-error .badge-dot{background:var(--error)}
+.badge-outline{background:transparent;border:1px solid var(--outline-variant);color:var(--on-surface-variant)}
+@keyframes bpulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* Input variants */
+.field{display:flex;flex-direction:column;gap:6px}
+.field-label{font-size:12px;font-weight:500;color:var(--on-surface-variant)}
+.input{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:9px 13px;font-size:13px;color:var(--on-surface);font-family:'Inter',sans-serif;outline:none;transition:all 150ms var(--ease);width:100%}
+.input::placeholder{color:var(--outline)}
+.input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,255,0.15)}
+.input-error{border-color:var(--error)!important;box-shadow:0 0 0 3px rgba(239,68,68,0.15)!important}
+.input-success{border-color:var(--success)!important}
+.input-disabled{opacity:0.45;cursor:not-allowed;pointer-events:none}
+.field-hint{font-size:11px;color:var(--outline)}
+.field-error-msg{font-size:11px;color:var(--error)}
+.field-success-msg{font-size:11px;color:var(--success)}
+
+/* Toggle */
+.toggle{width:36px;height:20px;background:var(--surface-container-high);border-radius:var(--rounded-full);cursor:pointer;position:relative;transition:background 200ms var(--ease);border:1px solid var(--outline);flex-shrink:0}
+.toggle.on{background:var(--primary);border-color:var(--primary)}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform 200ms var(--ease)}
+.toggle.on::after{transform:translateX(16px)}
+
+/* Nav items */
+.nav-demo{background:var(--surface);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);padding:8px;width:200px}
+.nav-item-demo{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--rounded);font-size:13px;font-weight:500;color:var(--on-surface-variant);cursor:pointer;transition:all 150ms var(--ease);text-decoration:none;margin-bottom:1px}
+.nav-item-demo:hover{color:var(--on-surface);background:var(--surface-container-high)}
+.nav-item-demo.active{color:var(--on-surface);background:var(--surface-container-high)}
+.nav-item-demo svg{width:15px;height:15px;flex-shrink:0}
+.nav-section-lbl{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--outline);padding:0 8px;margin-bottom:4px;margin-top:8px}
+.nav-section-lbl:first-child{margin-top:0}
+
+/* Select */
+.sel{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234B5580' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:32px;cursor:pointer}
+
+/* Alert */
+.alert{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:var(--rounded-md);border:1px solid}
+.alert-icon{width:18px;height:18px;flex-shrink:0;margin-top:1px}
+.alert-body{flex:1;min-width:0}
+.alert-title{font-size:13px;font-weight:600;margin-bottom:3px}
+.alert-msg{font-size:13px;line-height:1.55}
+.alert-dismiss{background:none;border:none;cursor:pointer;padding:2px;color:inherit;opacity:0.5;flex-shrink:0;display:flex}
+.alert-dismiss:hover{opacity:1}
+.alert-dismiss svg{width:14px;height:14px}
+.alert-info{background:rgba(37,99,255,0.07);border-color:rgba(37,99,255,0.2);color:var(--primary)}
+.alert-info .alert-msg,.alert-info .alert-title{color:var(--on-surface)}
+.alert-success{background:rgba(16,185,129,0.07);border-color:rgba(16,185,129,0.25);color:var(--success)}
+.alert-success .alert-msg,.alert-success .alert-title{color:var(--on-surface)}
+.alert-warning{background:rgba(245,158,11,0.07);border-color:rgba(245,158,11,0.25);color:var(--warning)}
+.alert-warning .alert-msg,.alert-warning .alert-title{color:var(--on-surface)}
+.alert-error{background:rgba(239,68,68,0.07);border-color:rgba(239,68,68,0.2);color:var(--error)}
+.alert-error .alert-msg,.alert-error .alert-title{color:var(--on-surface)}
+
+/* Code block */
+.code-block{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:var(--on-surface-variant);overflow-x:auto;white-space:pre}
+.code-block .kw{color:var(--tertiary)}
+.code-block .str{color:var(--secondary)}
+.code-block .num{color:var(--primary)}
+.code-block .cm{color:var(--outline)}
+.inline-code{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-sm);padding:1px 6px;color:var(--on-surface)}
+
+/* Modal */
+.modal{background:var(--surface-container-highest);border:1px solid var(--outline-variant);border-radius:var(--rounded-lg);width:100%;max-width:420px;overflow:hidden}
+.modal-header{display:flex;align-items:center;gap:8px;padding:18px 20px 0}
+.modal-title{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.modal-body{padding:12px 20px 20px}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid var(--outline-variant);background:var(--surface-container-high)}
+
+/* Tooltip */
+.tt-wrap{position:relative;display:inline-flex;flex-direction:column;align-items:center}
+.tooltip{position:absolute;background:var(--surface-container-highest);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:6px 10px;font-size:12px;white-space:nowrap;color:var(--on-surface);box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:10;pointer-events:none}
+.tt-top{bottom:calc(100% + 8px);left:50%;transform:translateX(-50%)}
+.tt-bottom{top:calc(100% + 8px);left:50%;transform:translateX(-50%)}
+.tt-left{right:calc(100% + 8px);top:50%;transform:translateY(-50%)}
+.tt-right{left:calc(100% + 8px);top:50%;transform:translateY(-50%)}
+.tt-arrow{position:absolute;width:6px;height:6px;background:var(--surface-container-highest);border:1px solid var(--outline-variant);transform:rotate(45deg)}
+.tt-arrow-top{top:100%;left:50%;margin-left:-3px;margin-top:-4px;border-top:none;border-left:none}
+.tt-arrow-bottom{bottom:100%;left:50%;margin-left:-3px;margin-bottom:-4px;border-bottom:none;border-right:none}
+.tt-arrow-left{left:100%;top:50%;margin-top:-3px;margin-left:-4px;border-left:none;border-bottom:none}
+.tt-arrow-right{right:100%;top:50%;margin-top:-3px;margin-right:-4px;border-right:none;border-top:none}
+.popover{position:absolute;bottom:calc(100% + 10px);left:0;background:var(--surface-container-highest);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);padding:14px 16px;width:280px;box-shadow:0 8px 24px rgba(0,0,0,0.35);z-index:10}
+.popover-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.popover-title{font-size:13px;font-weight:600;color:var(--on-surface)}
+
+/* Data table */
+.data-table-wrap{border:1px solid var(--outline-variant);border-radius:var(--rounded-md);overflow:hidden}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table thead{background:var(--surface-container-high)}
+.data-table th{padding:10px 14px;text-align:left;font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--outline);border-bottom:1px solid var(--outline-variant);white-space:nowrap}
+.th-sort{cursor:pointer;user-select:none}
+.th-sort:hover{color:var(--on-surface-variant)}
+.th-sort svg{width:9px;height:11px;margin-left:4px;vertical-align:middle;opacity:0.4}
+.th-sort:hover svg{opacity:1}
+.data-table td{padding:11px 14px;color:var(--on-surface-variant);border-bottom:1px solid var(--outline-variant)}
+.data-table tbody tr:last-child td{border-bottom:none}
+.data-table tbody tr:hover td{background:var(--surface-container-high);color:var(--on-surface)}
+
+/* Empty state */
+.empty-state{display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 24px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);gap:8px}
+.empty-icon{width:48px;height:48px;border-radius:var(--rounded-md);background:var(--surface-container-high);border:1px solid var(--outline-variant);display:flex;align-items:center;justify-content:center;margin-bottom:4px;color:var(--outline)}
+.empty-icon svg{width:24px;height:24px}
+.empty-title{font-size:14px;font-weight:600;color:var(--on-surface)}
+.empty-desc{font-size:13px;color:var(--on-surface-variant);line-height:1.55;max-width:240px}
+
+/* Progress */
+.progress-track{height:6px;background:var(--surface-container-high);border-radius:var(--rounded-full);overflow:hidden}
+.progress-bar{height:100%;background:var(--gradient-primary);border-radius:var(--rounded-full);transition:width 400ms var(--ease)}
+@keyframes indeterminate{0%{transform:translateX(-100%)}100%{transform:translateX(500%)}}
+.progress-indeterminate{width:30%;animation:indeterminate 1.4s ease infinite}
+
+/* Steps */
+.steps{display:flex;align-items:flex-start;gap:0;flex-wrap:wrap}
+.step{display:flex;align-items:flex-start;gap:10px}
+.step-line{width:40px;height:2px;background:var(--outline-variant);margin-top:13px;flex-shrink:0}
+.step-line-done{background:var(--primary)}
+.step-dot{width:26px;height:26px;border-radius:50%;background:var(--surface-container-high);border:2px solid var(--outline-variant);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--outline);flex-shrink:0}
+.step-dot-active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 0 0 4px rgba(37,99,255,0.18)}
+.step-dot-pending{background:transparent;border-color:var(--outline-variant);color:var(--outline)}
+.step-done .step-dot{background:var(--primary);border-color:var(--primary)}
+.step-content{padding-top:4px}
+.step-label{font-size:12px;font-weight:600;color:var(--on-surface)}
+.step-sub{font-size:11px;color:var(--on-surface-variant);margin-top:1px}
+.step-pending .step-label,.step-pending .step-sub{color:var(--outline)}
+
+/* Tabs */
+.tab-bar{display:flex;border-bottom:1px solid var(--outline-variant)}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:10px 16px;font-size:13px;font-weight:500;color:var(--on-surface-variant);cursor:pointer;font-family:'Inter',sans-serif;transition:all 150ms var(--ease);display:flex;align-items:center;gap:6px;margin-bottom:-1px}
+.tab:hover{color:var(--on-surface)}
+.tab.active{color:var(--on-surface);border-bottom-color:var(--primary);font-weight:600}
+.tab-count{font-size:10px;font-weight:600;padding:1px 6px;border-radius:var(--rounded-full);background:var(--surface-container-high);color:var(--on-surface-variant)}
+.tab-count-primary{background:rgba(37,99,255,0.12);color:var(--primary)}
+.tab-count-error{background:rgba(239,68,68,0.1);color:var(--error)}
+.tab-pills{display:flex;gap:4px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-full);padding:3px;width:fit-content}
+.tab-pill{background:none;border:none;padding:5px 14px;border-radius:var(--rounded-full);font-size:12px;font-weight:600;color:var(--on-surface-variant);cursor:pointer;font-family:'Inter',sans-serif;transition:all 150ms var(--ease)}
+.tab-pill:hover{color:var(--on-surface)}
+.tab-pill.active{background:var(--surface);color:var(--on-surface);box-shadow:0 1px 3px rgba(0,0,0,0.25)}
+
+/* Breadcrumb */
+.breadcrumb{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.bc-item{font-size:13px;color:var(--on-surface-variant);text-decoration:none;transition:color 120ms var(--ease)}
+.bc-item:hover{color:var(--on-surface)}
+.bc-sep{color:var(--outline);font-size:13px}
+.bc-current{font-size:13px;color:var(--on-surface);font-weight:500}
+
+/* Callout */
+.callout{display:flex;gap:10px;padding:12px 16px;border-radius:var(--rounded-md);border-left:3px solid;font-size:13px;line-height:1.6;color:var(--on-surface-variant)}
+.callout-icon{width:16px;height:16px;flex-shrink:0;margin-top:2px}
+.callout-tip{background:rgba(37,99,255,0.06);border-color:var(--primary);color:var(--on-surface-variant)}
+.callout-tip .callout-icon{color:var(--primary)}
+.callout-warning{background:rgba(245,158,11,0.06);border-color:var(--warning)}
+.callout-warning .callout-icon{color:var(--warning)}
+.callout-note{background:var(--surface-container);border-color:var(--outline)}
+.callout-note .callout-icon{color:var(--outline)}
+
+/* Disclosure */
+.disclosure{border:1px solid var(--outline-variant);border-radius:var(--rounded-md);overflow:hidden}
+.disclosure-trigger{width:100%;display:flex;align-items:center;gap:8px;padding:12px 14px;background:var(--surface-container);border:none;font-size:13px;font-weight:500;color:var(--on-surface);cursor:pointer;font-family:'Inter',sans-serif;text-align:left;transition:background 120ms var(--ease)}
+.disclosure-trigger:hover{background:var(--surface-container-high)}
+.disclosure-arrow{width:14px;height:14px;flex-shrink:0;transition:transform 200ms var(--ease);color:var(--outline)}
+.disclosure.open .disclosure-arrow{transform:rotate(180deg)}
+.disclosure-body{padding:14px;background:var(--surface-container-low)}
+
+/* Timeline */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:14px;position:relative;padding-bottom:24px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item:not(:last-child)::before{content:'';position:absolute;left:7px;top:20px;bottom:0;width:1px;background:var(--outline-variant)}
+.tl-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;margin-top:2px;z-index:1;border:2px solid var(--background)}
+.tl-content{flex:1;min-width:0}
+.tl-header{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:4px}
+.tl-title{font-size:13px;font-weight:600;color:var(--on-surface)}
+.tl-time{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--outline);flex-shrink:0}
+.tl-body{font-size:13px;color:var(--on-surface-variant);line-height:1.55}
+
+/* Diff */
+.diff-block{background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);overflow:hidden}
+.diff-header{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:var(--surface-container-high);border-bottom:1px solid var(--outline-variant)}
+.diff-filename{font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--on-surface)}
+.diff-meta{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--outline)}
+.diff-body{font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7}
+.diff-hunk{padding:3px 14px;background:rgba(37,99,255,0.06);color:var(--outline);border-top:1px solid var(--outline-variant);border-bottom:1px solid var(--outline-variant)}
+.diff-line{display:flex;gap:0;padding:1px 0}
+.diff-gutter{width:24px;text-align:center;flex-shrink:0;font-weight:700}
+.diff-ctx{padding-left:24px;color:var(--on-surface-variant)}
+.diff-add{background:rgba(16,185,129,0.08);color:var(--success)}
+.diff-del{background:rgba(239,68,68,0.08);color:var(--error);text-decoration:line-through;text-decoration-color:rgba(239,68,68,0.4)}
+.annotation{font-size:11px;color:var(--outline);font-style:italic;margin-left:8px}
+
+/* Drag-and-drop */
+.dnd-list{display:flex;flex-direction:column;gap:4px}
+.dnd-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);cursor:grab;transition:all 150ms var(--ease)}
+.dnd-item:hover{border-color:var(--outline);background:var(--surface-container-high)}
+.dnd-item:hover .dnd-grip{opacity:1}
+.dnd-dragging{opacity:0.6;transform:rotate(2deg);box-shadow:0 8px 24px rgba(0,0,0,0.35);cursor:grabbing}
+.dnd-grip{width:16px;height:16px;color:var(--outline);opacity:0.3;flex-shrink:0;transition:opacity 150ms;display:flex;align-items:center}
+.dnd-grip svg{width:8px;height:14px}
+.dnd-icon{width:28px;height:28px;border-radius:var(--rounded-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dnd-text{flex:1;min-width:0}
+.dnd-title{font-size:13px;font-weight:500;color:var(--on-surface)}
+.dnd-sub{font-size:11px;color:var(--on-surface-variant);margin-top:1px}
+.dnd-step{font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--outline);flex-shrink:0}
+.dnd-drop-indicator{height:2px;background:var(--primary);border-radius:1px;margin:2px 0;box-shadow:0 0 6px rgba(37,99,255,0.5)}
+
+/* Feature flags */
+.flag-list{display:flex;flex-direction:column;border:1px solid var(--outline-variant);border-radius:var(--rounded-md);overflow:hidden}
+.flag-row{display:flex;align-items:flex-start;gap:16px;padding:14px 16px;border-bottom:1px solid var(--outline-variant);background:var(--surface-container)}
+.flag-row:last-child{border-bottom:none}
+.flag-row:hover{background:var(--surface-container-high)}
+.flag-text{flex:1;min-width:0}
+.flag-name{font-size:13px;font-weight:600;color:var(--on-surface);margin-bottom:3px}
+.flag-desc{font-size:12px;color:var(--on-surface-variant);line-height:1.5}
+.flag-warn{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--warning);margin-top:6px}
+.flag-warn svg{flex-shrink:0}
+
+/* Theme toggle */
+.theme-toggle{position:fixed;top:20px;right:20px;z-index:200;display:flex;align-items:center;gap:8px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-full);padding:6px 14px;cursor:pointer;font-size:12px;font-weight:600;color:var(--on-surface-variant);transition:all 150ms var(--ease);font-family:'Inter',sans-serif}
+.theme-toggle:hover{border-color:var(--outline);color:var(--on-surface)}
+.theme-toggle svg{width:14px;height:14px;flex-shrink:0}
+
+/* Row layout helpers */
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.col{display:flex;flex-direction:column;gap:12px}
+
+/* Node flow diagram */
+.flow-row{display:flex;align-items:center;gap:8px}
+.flow-connector{flex:1;display:flex;align-items:center}
+.flow-line{flex:1;height:2px;border-radius:1px}
+.flow-arrow{color:var(--outline);font-size:11px;margin-left:-2px}
+</style>
+</head>
+<body>
+<button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" aria-label="Toggle light/dark theme">
+  <svg id="theme-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="4"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.9 4.9l1.4 1.4M13.7 13.7l1.4 1.4M4.9 15.1l1.4-1.4M13.7 6.3l1.4-1.4"/></svg>
+  <span id="theme-label">Light</span>
+</button>
+
+<div class="page">
+
+  <header class="page-header">
+    <div class="brand-mark">
+      <div class="brand-icon">
+        <svg viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="4" cy="10" r="2"/><circle cx="16" cy="5" r="2"/><circle cx="16" cy="15" r="2"/>
+          <path d="M6 9.5l8-4M6 10.5l8 4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">intelligent-machines</div>
+        <div class="brand-label">Component Variants</div>
+      </div>
+    </div>
+    <h1 class="page-title">Component Variant Matrix</h1>
+    <p class="page-desc">Every size, state, and intent of each component on a single sheet. Use as a build reference and visual regression baseline.</p>
+  </header>
+
+  <!-- BUTTONS -->
+  <section class="section" id="buttons">
+    <div class="section-header">
+      <h2 class="section-title">Buttons</h2>
+      <p class="section-desc">Three variants. Gradient primary reserved for the single highest-priority action per screen only. All transitions 200ms ease-out.</p>
+    </div>
+
+    <p class="sub-label">Variants</p>
+    <div class="variant-grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+      <div class="variant-wrap">
+        <div class="variant-meta">A — Primary <span class="variant-tag">gradient CTA</span></div>
+        <div style="padding:20px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);display:flex;flex-direction:column;gap:10px">
+          <button class="btn btn-primary">Start building</button>
+          <button class="btn btn-primary btn-lg">Large primary</button>
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary" disabled>Disabled</button>
+        </div>
+        <p class="variant-hint">Single use per screen. Gradient bg. Active: scale(0.98).</p>
+      </div>
+      <div class="variant-wrap">
+        <div class="variant-meta">B — Secondary <span class="variant-tag">supporting action</span></div>
+        <div style="padding:20px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);display:flex;flex-direction:column;gap:10px">
+          <button class="btn btn-secondary">See how it works</button>
+          <button class="btn btn-secondary btn-lg">Large secondary</button>
+          <button class="btn btn-secondary btn-sm">Small</button>
+          <button class="btn btn-secondary" disabled>Disabled</button>
+        </div>
+        <p class="variant-hint">surface-container bg, outline border. Pairs alongside primary.</p>
+      </div>
+      <div class="variant-wrap">
+        <div class="variant-meta">C — Ghost <span class="variant-tag">tertiary / destructive</span></div>
+        <div style="padding:20px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);display:flex;flex-direction:column;gap:10px">
+          <button class="btn btn-ghost">Cancel</button>
+          <button class="btn btn-ghost btn-lg">View logs</button>
+          <button class="btn btn-ghost btn-sm">Dismiss</button>
+          <button class="btn btn-destructive btn-sm">Delete agent</button>
+        </div>
+        <p class="variant-hint">No visible border at rest. Hover fills surface-container-high.</p>
+      </div>
+      <div class="variant-wrap">
+        <div class="variant-meta">D — Icon buttons <span class="variant-tag">compact</span></div>
+        <div style="padding:20px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-primary btn-icon"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 4v12M4 10h12"/></svg></button>
+          <button class="btn btn-secondary btn-icon"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M10 4l6 6-6 6"/></svg></button>
+          <button class="btn btn-ghost btn-icon"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="1.5"/><circle cx="3" cy="10" r="1.5"/><circle cx="17" cy="10" r="1.5"/></svg></button>
+          <button class="btn btn-secondary btn-icon btn-icon-sm"><svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l12 12M16 4L4 16"/></svg></button>
+        </div>
+        <p class="variant-hint">Use rounded DEFAULT (8px). All three variants available.</p>
+      </div>
+      <div class="variant-wrap">
+        <div class="variant-meta">E — With icons <span class="variant-tag">label + icon</span></div>
+        <div style="padding:20px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);display:flex;flex-direction:column;gap:10px">
+          <button class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 4v12M4 10h12"/></svg>
+            New workflow
+          </button>
+          <button class="btn btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M10 4l6 6-6 6"/></svg>
+            Deploy agent
+          </button>
+          <button class="btn btn-ghost btn-sm">
+            <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="12" height="14" rx="1.5"/><path d="M7 7h6M7 10h6M7 13h4"/></svg>
+            View logs
+          </button>
+        </div>
+        <p class="variant-hint">Icon left of label. 7px gap. 14px icon on default, 12px on sm.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CARDS -->
+  <section class="section" id="cards">
+    <div class="section-header">
+      <h2 class="section-title">Cards</h2>
+      <p class="section-desc">Six structural treatments of the agent card. Hover each to see interactive state. Accent stripe and elevated variants used for featured or running content.</p>
+    </div>
+
+    <div id="card-controls" class="controls">
+      <label>Padding <input type="range" min="12" max="32" value="24" oninput="updateCardPad(this.value)"> <span id="pad-val">24px</span></label>
+      <div class="ctrl-divider"></div>
+      <span style="font-size:12px;color:var(--on-surface-variant)">Border</span>
+      <div style="display:flex;gap:4px">
+        <button class="ctrl-btn active" id="border-none" onclick="setCardBorder('none',this)">none</button>
+        <button class="ctrl-btn" id="border-hairline" onclick="setCardBorder('hairline',this)">hairline</button>
+        <button class="ctrl-btn" id="border-solid" onclick="setCardBorder('solid',this)">solid</button>
+      </div>
+      <div class="ctrl-divider"></div>
+      <label><input type="checkbox" onchange="toggleCardShadow(this.checked)" style="accent-color:var(--primary)"> Shadow</label>
+      <div class="ctrl-divider"></div>
+      <label><input type="checkbox" onchange="toggleCardHover(this.checked)" style="accent-color:var(--primary)"> Hover state</label>
+    </div>
+
+    <div class="variant-grid" id="card-grid">
+      <div class="variant-wrap">
+        <div class="variant-meta">A — Default <span class="variant-tag">standard content</span></div>
+        <div class="card card-outlined card-demo" style="--p:24px;padding:24px">
+          <div style="margin-bottom:10px"><span class="badge badge-active"><span class="badge-dot"></span>Active</span></div>
+          <div class="card-title">Email Engagement Agent</div>
+          <div class="card-meta">Monitors inbox, drafts replies, routes leads.</div>
+          <div class="card-footer">
+            <span style="font-size:11px;color:var(--outline)">42 tasks today</span>
+            <button class="btn btn-ghost btn-sm">View →</button>
+          </div>
+        </div>
+        <p class="variant-hint">surface-container bg · outline-variant border · md radius</p>
+      </div>
+
+      <div class="variant-wrap">
+        <div class="variant-meta">B — Accent stripe <span class="variant-tag">featured / running</span></div>
+        <div class="card card-accent-stripe card-demo" style="--p:24px;padding:24px">
+          <div style="margin-bottom:10px"><span class="badge badge-running"><span class="badge-dot"></span>Running</span></div>
+          <div class="card-title">Market Research Workflow</div>
+          <div class="card-meta">Competitor analysis across 12 sources.</div>
+          <div class="card-footer">
+            <span style="font-size:11px;color:var(--outline)">Step 4 of 7</span>
+            <button class="btn btn-ghost btn-sm">View →</button>
+          </div>
+        </div>
+        <p class="variant-hint">2px gradient top border. For actively running or pinned workflows.</p>
+      </div>
+
+      <div class="variant-wrap">
+        <div class="variant-meta">C — Elevated <span class="variant-tag">modal / popover</span></div>
+        <div class="card card-elevated card-demo" style="--p:24px;padding:24px">
+          <div style="margin-bottom:10px"><span class="badge badge-completed"><span class="badge-dot"></span>Completed</span></div>
+          <div class="card-title">Invoice Processing</div>
+          <div class="card-meta">Extracted and filed 18 invoices.</div>
+          <div class="card-footer">
+            <span style="font-size:11px;color:var(--outline)">Finished 12m ago</span>
+            <button class="btn btn-ghost btn-sm">View →</button>
+          </div>
+        </div>
+        <p class="variant-hint">box-shadow 0 4px 16px rgba(0,0,0,.45). No glow — completed state.</p>
+      </div>
+
+      <div class="variant-wrap">
+        <div class="variant-meta">D — Flat <span class="variant-tag">dense lists</span></div>
+        <div class="card card-flat card-demo" style="--p:24px;padding:24px;border-radius:var(--rounded-md)">
+          <div style="margin-bottom:10px"><span class="badge badge-paused"><span class="badge-dot"></span>Paused</span></div>
+          <div class="card-title">CRM Sync Agent</div>
+          <div class="card-meta">Bidirectional sync paused by user.</div>
+          <div class="card-footer">
+            <span style="font-size:11px;color:var(--outline)">Paused 2h ago</span>
+            <button class="btn btn-ghost btn-sm">Resume →</button>
+          </div>
+        </div>
+        <p class="variant-hint">No border, no bg. Hover reveals surface-container fill.</p>
+      </div>
+
+      <div class="variant-wrap">
+        <div class="variant-meta">E — Metric <span class="variant-tag">KPI tiles</span></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div class="card card-outlined" style="padding:18px;min-width:130px">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--outline);margin-bottom:8px">Tasks Today</div>
+            <div style="font-size:32px;font-weight:700;letter-spacing:-0.03em;line-height:1">342</div>
+            <div style="font-size:11px;color:var(--secondary);margin-top:4px">+18% vs yesterday</div>
+          </div>
+          <div class="card card-outlined" style="padding:18px;min-width:130px">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--outline);margin-bottom:8px">Hours Saved</div>
+            <div style="font-size:32px;font-weight:700;letter-spacing:-0.03em;line-height:1">6.4</div>
+            <div style="font-size:11px;color:var(--secondary);margin-top:4px">This week</div>
+          </div>
+        </div>
+        <p class="variant-hint">headline-md value · label-md header · secondary for positive delta.</p>
+      </div>
+
+      <div class="variant-wrap">
+        <div class="variant-meta">F — Inset <span class="variant-tag">nested in white panels</span></div>
+        <div class="card card-inset card-demo" style="--p:24px;padding:24px">
+          <div style="margin-bottom:10px"><span class="badge badge-outline">Draft</span></div>
+          <div class="card-title">Onboarding Workflow</div>
+          <div class="card-meta">Nested inside account settings panel.</div>
+          <div class="card-footer">
+            <span style="font-size:11px;color:var(--outline)">Not yet deployed</span>
+            <button class="btn btn-ghost btn-sm">Edit →</button>
+          </div>
+        </div>
+        <p class="variant-hint">surface-container-low bg · surface-container border · sits inside another card</p>
+      </div>
+
+      <div class="variant-wrap">
+        <div class="variant-meta">G — Horizontal row <span class="variant-tag">compact lists</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="card card-outlined card-horizontal" style="padding:14px 16px">
+            <div style="width:32px;height:32px;border-radius:var(--rounded-sm);background:rgba(0,212,196,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#00D4C4" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="10" r="2"/><circle cx="16" cy="5" r="2"/><circle cx="16" cy="15" r="2"/><path d="M6 9.5l8-4M6 10.5l8 4"/></svg>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div class="card-title" style="font-size:13px">Email Agent</div>
+              <div class="card-meta" style="font-size:11px">42 tasks · last run 2m</div>
+            </div>
+            <span class="badge badge-active" style="flex-shrink:0"><span class="badge-dot"></span>Active</span>
+          </div>
+          <div class="card card-outlined card-horizontal" style="padding:14px 16px">
+            <div style="width:32px;height:32px;border-radius:var(--rounded-sm);background:rgba(37,99,255,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#2563FF" stroke-width="1.5" stroke-linecap="round"><path d="M3 14l4-5 3 3 3-6 4 4"/></svg>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div class="card-title" style="font-size:13px">Market Research</div>
+              <div class="card-meta" style="font-size:11px">Step 4 of 7</div>
+            </div>
+            <span class="badge badge-running" style="flex-shrink:0"><span class="badge-dot"></span>Running</span>
+          </div>
+        </div>
+        <p class="variant-hint">32px icon tile · flex row · badge right-aligned.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- WORKFLOW NODES -->
+  <section class="section" id="nodes">
+    <div class="section-header">
+      <h2 class="section-title">Workflow Nodes</h2>
+      <p class="section-desc">180px fixed width · md radius. Three semantic types (trigger, action, research) × four states. Ports always visible; out-port animates when running.</p>
+    </div>
+
+    <p class="sub-label">Node types</p>
+    <div class="row" style="margin-bottom:32px;align-items:flex-start">
+      <div class="variant-wrap">
+        <div class="variant-meta" style="margin-bottom:8px">Trigger</div>
+        <div class="node node-trigger node-idle">
+          <div class="node-port node-port-in"></div>
+          <div class="node-header">
+            <div class="node-icon">
+              <svg viewBox="0 0 20 20" fill="none" stroke="#00D4C4" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 6v5l3 2"/></svg>
+            </div>
+            <span class="node-title">Schedule trigger</span>
+          </div>
+          <div class="node-sub">Every 15 minutes</div>
+          <div class="node-port node-port-out"></div>
+        </div>
+      </div>
+      <div class="variant-wrap">
+        <div class="variant-meta" style="margin-bottom:8px">Action</div>
+        <div class="node node-action node-idle">
+          <div class="node-port node-port-in"></div>
+          <div class="node-header">
+            <div class="node-icon">
+              <svg viewBox="0 0 20 20" fill="none" stroke="#2563FF" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h7"/><path d="M15 12l2 2-2 2"/></svg>
+            </div>
+            <span class="node-title">Process inbox</span>
+          </div>
+          <div class="node-sub">Filter · summarise</div>
+          <div class="node-port node-port-out"></div>
+        </div>
+      </div>
+      <div class="variant-wrap">
+        <div class="variant-meta" style="margin-bottom:8px">Research</div>
+        <div class="node node-research node-idle">
+          <div class="node-port node-port-in"></div>
+          <div class="node-header">
+            <div class="node-icon">
+              <svg viewBox="0 0 20 20" fill="none" stroke="#7B3CFF" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2"/></svg>
+            </div>
+            <span class="node-title">Web research</span>
+          </div>
+          <div class="node-sub">12 sources · weekly</div>
+          <div class="node-port node-port-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-label">Node states</p>
+    <div class="row" style="align-items:flex-start;margin-bottom:32px">
+      <div class="variant-wrap">
+        <div class="variant-meta" style="margin-bottom:8px">Idle</div>
+        <div class="node node-action node-idle">
+          <div class="node-port node-port-in"></div>
+          <div class="node-header">
+            <div class="node-icon"><svg viewBox="0 0 20 20" fill="none" stroke="#2563FF" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h7"/></svg></div>
+            <span class="node-title">Send digest email</span>
+          </div>
+          <div class="node-sub">Waiting for input</div>
+          <div class="node-port node-port-out"></div>
+        </div>
+        <p class="variant-hint">outline-variant border · no glow</p>
+      </div>
+      <div class="variant-wrap">
+        <div class="variant-meta" style="margin-bottom:8px">Running</div>
+        <div class="node node-action node-running">
+          <div class="node-port node-port-in"></div>
+          <div class="node-header">
+            <div class="node-icon"><svg viewBox="0 0 20 20" fill="none" stroke="#2563FF" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h7"/></svg></div>
+            <span class="node-title">Send digest email</span>
+          </div>
+          <div class="node-sub" style="color:var(--primary)">Processing…</div>
+          <div class="node-port node-port-out"></div>
+        </div>
+        <p class="variant-hint">primary border · blue glow ring · port pulses</p>
+      </div>
+      <div class="variant-wrap">
+        <div class="variant-meta" style="margin-bottom:8px">Completed</div>
+        <div class="node node-action node-completed">
+          <div class="node-port node-port-in"></div>
+          <div class="node-header">
+            <div class="node-icon"><svg viewBox="0 0 20 20" fill="none" stroke="#2563FF" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h7"/></svg></div>
+            <span class="node-title">Send digest email</span>
+          </div>
+          <div class="node-sub" style="color:var(--success)">Done · 2 recipients</div>
+          <div class="node-port node-port-out" style="background:var(--success);border-color:var(--success)"></div>
+        </div>
+        <p class="variant-hint">outline-variant border · teal out-port</p>
+      </div>
+      <div class="variant-wrap">
+        <div class="variant-meta" style="margin-bottom:8px">Error</div>
+        <div class="node node-action node-error">
+          <div class="node-port node-port-in"></div>
+          <div class="node-header">
+            <div class="node-icon"><svg viewBox="0 0 20 20" fill="none" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h7"/></svg></div>
+            <span class="node-title">Send digest email</span>
+          </div>
+          <div class="node-sub" style="color:var(--error)">Auth failed</div>
+          <div class="node-port node-port-out" style="background:var(--error);border-color:var(--error)"></div>
+        </div>
+        <p class="variant-hint">error border · red glow ring</p>
+      </div>
+    </div>
+
+    <p class="sub-label">Connector states</p>
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:400px">
+      <div>
+        <div class="flow-row">
+          <div class="node node-idle" style="width:auto;padding:8px 12px;flex-shrink:0;font-size:12px;color:var(--on-surface-variant)">Step A</div>
+          <div class="flow-connector"><div class="flow-line" style="background:var(--outline-variant)"></div></div>
+          <div class="node node-idle" style="width:auto;padding:8px 12px;flex-shrink:0;font-size:12px;color:var(--on-surface-variant)">Step B</div>
+        </div>
+        <p style="font-size:11px;color:var(--outline);margin-top:6px">Idle — outline-variant</p>
+      </div>
+      <div>
+        <div class="flow-row">
+          <div class="node node-running" style="width:auto;padding:8px 12px;flex-shrink:0;font-size:12px;color:var(--primary)">Step A</div>
+          <div class="flow-connector"><div class="connector live" style="flex:1"></div></div>
+          <div class="node node-idle" style="width:auto;padding:8px 12px;flex-shrink:0;font-size:12px;color:var(--on-surface-variant)">Step B</div>
+        </div>
+        <p style="font-size:11px;color:var(--outline);margin-top:6px">Live — animated gradient sweep</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- BADGES -->
+  <section class="section" id="badges">
+    <div class="section-header">
+      <h2 class="section-title">Badges</h2>
+      <p class="section-desc">Five workflow states + outline variant. Always pair colour with a label — never colour alone. label-md typography (11px 600 0.06em uppercase) throughout.</p>
+    </div>
+
+    <p class="sub-label">All states</p>
+    <div class="row" style="margin-bottom:24px">
+      <div class="variant-wrap" style="align-items:flex-start">
+        <span class="badge badge-active"><span class="badge-dot"></span>Active</span>
+        <p class="variant-hint" style="margin-top:6px">secondary · teal · live & enabled agents</p>
+      </div>
+      <div class="variant-wrap" style="align-items:flex-start">
+        <span class="badge badge-running"><span class="badge-dot"></span>Running</span>
+        <p class="variant-hint" style="margin-top:6px">primary · blue · pulsing dot · executing now</p>
+      </div>
+      <div class="variant-wrap" style="align-items:flex-start">
+        <span class="badge badge-completed"><span class="badge-dot"></span>Completed</span>
+        <p class="variant-hint" style="margin-top:6px">success · green · run finished cleanly</p>
+      </div>
+      <div class="variant-wrap" style="align-items:flex-start">
+        <span class="badge badge-paused"><span class="badge-dot"></span>Paused</span>
+        <p class="variant-hint" style="margin-top:6px">warning · amber · user-suspended</p>
+      </div>
+      <div class="variant-wrap" style="align-items:flex-start">
+        <span class="badge badge-error"><span class="badge-dot"></span>Error</span>
+        <p class="variant-hint" style="margin-top:6px">error · red · needs intervention</p>
+      </div>
+      <div class="variant-wrap" style="align-items:flex-start">
+        <span class="badge badge-outline">Draft</span>
+        <p class="variant-hint" style="margin-top:6px">outline-variant · neutral state</p>
+      </div>
+    </div>
+
+    <p class="sub-label">In context</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:8px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:8px 14px">
+        <span style="font-size:13px;font-weight:500;color:var(--on-surface)">Email Agent</span>
+        <span class="badge badge-active"><span class="badge-dot"></span>Active</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:8px 14px">
+        <span style="font-size:13px;font-weight:500;color:var(--on-surface)">Market Research</span>
+        <span class="badge badge-running"><span class="badge-dot"></span>Running</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded);padding:8px 14px">
+        <span style="font-size:13px;font-weight:500;color:var(--on-surface)">Invoice Sync</span>
+        <span class="badge badge-error"><span class="badge-dot"></span>Error</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- FORMS -->
+  <section class="section" id="forms">
+    <div class="section-header">
+      <h2 class="section-title">Form Controls</h2>
+      <p class="section-desc">Inputs, selects, toggles, and checkboxes. Labels always outside the field. Blue focus ring. Error uses red border + glow ring.</p>
+    </div>
+
+    <p class="sub-label">Input states</p>
+    <div class="variant-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-bottom:32px">
+      <div class="field">
+        <label class="field-label">Default</label>
+        <input class="input" type="text" placeholder="Agent name…">
+        <span class="field-hint">Supporting hint text</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Filled</label>
+        <input class="input" type="text" value="Email Engagement Agent">
+      </div>
+      <div class="field">
+        <label class="field-label">Focus (simulated)</label>
+        <input class="input" type="text" value="Email Engagement Agent" style="border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,255,0.15)">
+      </div>
+      <div class="field">
+        <label class="field-label">Error</label>
+        <input class="input input-error" type="text" value="not-a-valid-url">
+        <span class="field-error-msg">Must be a valid HTTPS URL</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Success</label>
+        <input class="input input-success" type="text" value="api.example.com/webhook">
+        <span class="field-success-msg">URL is reachable</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Disabled</label>
+        <input class="input input-disabled" type="text" value="Read-only value" disabled>
+      </div>
+    </div>
+
+    <p class="sub-label">Toggles &amp; checkboxes</p>
+    <div class="row" style="align-items:flex-start;margin-bottom:32px">
+      <div class="col">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          <span style="font-size:13px;color:var(--on-surface-variant)">Send notifications</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="toggle" onclick="this.classList.toggle('on')"></div>
+          <span style="font-size:13px;color:var(--on-surface-variant)">Require approval</span>
+        </div>
+        <p class="variant-hint">pill-shaped · primary on state · click to toggle</p>
+      </div>
+      <div class="col">
+        <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="this.querySelector('.cb').classList.toggle('checked')">
+          <div class="cb" style="width:16px;height:16px;background:var(--primary);border:1px solid var(--primary);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" stroke="white" stroke-width="1.5"><path d="M1 4L3.5 6.5 9 1"/></svg>
+          </div>
+          <span style="font-size:13px;color:var(--on-surface-variant)">Log all actions</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="this.querySelector('.cb').classList.toggle('checked')">
+          <div class="cb" style="width:16px;height:16px;background:var(--surface-container);border:1px solid var(--outline);border-radius:4px;flex-shrink:0"></div>
+          <span style="font-size:13px;color:var(--on-surface-variant)">Archive completed runs</span>
+        </div>
+        <p class="variant-hint">sm radius · primary filled checked state · click to toggle</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SELECT + TEXTAREA -->
+  <section class="section" id="selects">
+    <div class="section-header">
+      <h2 class="section-title">Select &amp; Textarea</h2>
+      <p class="section-desc">Select uses a custom caret; textarea for multi-line inputs like prompt templates and agent descriptions. Same token base as inputs.</p>
+    </div>
+    <p class="sub-label">Select states</p>
+    <div class="variant-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-bottom:32px">
+      <div class="field">
+        <label class="field-label">Default</label>
+        <select class="input sel">
+          <option>Every 15 minutes</option>
+          <option>Every hour</option>
+          <option>Daily at 9am</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Focus (simulated)</label>
+        <select class="input sel" style="border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,255,0.15)">
+          <option>Every hour</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Disabled</label>
+        <select class="input sel input-disabled" disabled>
+          <option>Every 15 minutes</option>
+        </select>
+      </div>
+    </div>
+    <p class="sub-label">Textarea states</p>
+    <div class="variant-grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">
+      <div class="field">
+        <label class="field-label">Default</label>
+        <textarea class="input" rows="4" placeholder="Describe what this agent should do…" style="resize:vertical;line-height:1.6"></textarea>
+        <span class="field-hint">Used for agent descriptions and prompt templates</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Mono — prompt template</label>
+        <textarea class="input" rows="4" style="font-family:'JetBrains Mono',monospace;font-size:12px;resize:vertical;line-height:1.7">You are a helpful assistant.
+Summarise the following email thread
+in under 3 bullet points. Be concise.</textarea>
+      </div>
+      <div class="field">
+        <label class="field-label">Error</label>
+        <textarea class="input input-error" rows="4" style="resize:vertical;line-height:1.6">too short</textarea>
+        <span class="field-error-msg">Prompt must be at least 20 characters</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ALERTS -->
+  <section class="section" id="alerts">
+    <div class="section-header">
+      <h2 class="section-title">Alerts &amp; Banners</h2>
+      <p class="section-desc">Inline semantic messages. Always icon + label + optional action. Never colour alone — pair with text and icon.</p>
+    </div>
+    <p class="sub-label">Variants</p>
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:640px">
+      <div class="alert alert-info">
+        <svg class="alert-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 9v5M10 7h.01"/></svg>
+        <div class="alert-body">
+          <div class="alert-title">Heads up</div>
+          <div class="alert-msg">This workflow will run in the background. You can monitor it from the Activity log.</div>
+        </div>
+        <button class="alert-dismiss" onclick="this.closest('.alert').remove()">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+        </button>
+      </div>
+      <div class="alert alert-success">
+        <svg class="alert-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M7 10l2 2 4-4"/></svg>
+        <div class="alert-body">
+          <div class="alert-title">Deployed successfully</div>
+          <div class="alert-msg">Email Engagement Agent is now live and monitoring your inbox.</div>
+        </div>
+        <button class="alert-dismiss" onclick="this.closest('.alert').remove()">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+        </button>
+      </div>
+      <div class="alert alert-warning">
+        <svg class="alert-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10 3L2 17h16L10 3z"/><path d="M10 9v4M10 15h.01"/></svg>
+        <div class="alert-body">
+          <div class="alert-title">Rate limit approaching</div>
+          <div class="alert-msg">You've used 80% of your monthly API quota. <a href="#" style="color:var(--warning);text-decoration:underline">Upgrade plan</a></div>
+        </div>
+        <button class="alert-dismiss" onclick="this.closest('.alert').remove()">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+        </button>
+      </div>
+      <div class="alert alert-error">
+        <svg class="alert-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 7v4M10 13h.01"/></svg>
+        <div class="alert-body">
+          <div class="alert-title">Authentication failed</div>
+          <div class="alert-msg">Could not connect to Gmail. Check your OAuth credentials in Settings.</div>
+        </div>
+        <button class="alert-dismiss" onclick="this.closest('.alert').remove()">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CODE BLOCK -->
+  <section class="section" id="code">
+    <div class="section-header">
+      <h2 class="section-title">Code Block</h2>
+      <p class="section-desc">JetBrains Mono. Used for agent logs, trace output, and config values. Syntax token colours map directly to accent triad: violet for keywords, teal for strings, blue for numbers.</p>
+    </div>
+    <p class="sub-label">Inline code</p>
+    <div style="margin-bottom:24px;font-size:14px;line-height:1.8;color:var(--on-surface-variant)">
+      Set the trigger interval using <code class="inline-code">schedule.interval</code> or pass a cron expression like <code class="inline-code">0 9 * * 1-5</code> directly.
+    </div>
+    <p class="sub-label">Block — agent log output</p>
+    <div class="code-block" style="margin-bottom:16px"><span class="cm">// agent run trace · 2024-01-15 09:14:22</span>
+<span class="kw">agent</span>.<span class="str">run</span>({ task: <span class="str">"summarise_inbox"</span>, limit: <span class="num">50</span>, dry_run: <span class="kw">false</span> })
+  <span class="cm">→ fetching messages…</span>  <span class="num">50</span> found
+  <span class="cm">→ filtering…</span>         <span class="num">12</span> actionable
+  <span class="cm">→ drafting replies…</span>  <span class="num">12</span>/<span class="num">12</span> complete
+  <span class="cm">→ routing to CRM…</span>   <span class="num">4</span> leads added
+<span class="str">✓ completed</span> in <span class="num">3.4s</span></div>
+    <p class="sub-label">Block — config / JSON</p>
+    <div class="code-block"><span class="cm">// workflow config</span>
+{
+  <span class="str">"id"</span>: <span class="str">"wf_email_engagement"</span>,
+  <span class="str">"trigger"</span>: { <span class="str">"type"</span>: <span class="str">"schedule"</span>, <span class="str">"interval"</span>: <span class="num">900</span> },
+  <span class="str">"steps"</span>: [
+    { <span class="str">"agent"</span>: <span class="str">"inbox_reader"</span>, <span class="str">"limit"</span>: <span class="num">50</span> },
+    { <span class="str">"agent"</span>: <span class="str">"reply_drafter"</span>, <span class="str">"tone"</span>: <span class="str">"professional"</span> }
+  ],
+  <span class="str">"notifications"</span>: <span class="kw">true</span>
+}</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- MODAL -->
+  <section class="section" id="modal">
+    <div class="section-header">
+      <h2 class="section-title">Modal &amp; Dialog</h2>
+      <p class="section-desc">lg radius (16px). Overlay uses 60% black scrim. Max-width 480px for confirmation dialogs, 640px for forms. Footer always right-aligned: ghost cancel left, primary confirm right.</p>
+    </div>
+    <p class="sub-label">Confirmation dialog</p>
+    <div style="position:relative;background:rgba(0,0,0,0.5);border-radius:var(--rounded-md);padding:40px 24px;display:flex;align-items:center;justify-content:center;margin-bottom:24px">
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-title">Delete agent?</div>
+          <button class="btn btn-ghost btn-icon" style="margin:-4px -6px -4px auto">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size:14px;color:var(--on-surface-variant);line-height:1.6">This will permanently delete <strong style="color:var(--on-surface)">Email Engagement Agent</strong> and all its run history. This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost">Cancel</button>
+          <button class="btn btn-destructive">Delete agent</button>
+        </div>
+      </div>
+    </div>
+    <p class="sub-label">Form dialog</p>
+    <div style="position:relative;background:rgba(0,0,0,0.5);border-radius:var(--rounded-md);padding:40px 24px;display:flex;align-items:center;justify-content:center">
+      <div class="modal" style="max-width:500px">
+        <div class="modal-header">
+          <div class="modal-title">New workflow</div>
+          <button class="btn btn-ghost btn-icon" style="margin:-4px -6px -4px auto">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+          </button>
+        </div>
+        <div class="modal-body" style="display:flex;flex-direction:column;gap:16px">
+          <div class="field">
+            <label class="field-label">Workflow name</label>
+            <input class="input" type="text" value="Market Research Weekly">
+          </div>
+          <div class="field">
+            <label class="field-label">Description</label>
+            <textarea class="input" rows="3" style="resize:none;line-height:1.6">Competitor analysis across 12 sources, generates weekly summary.</textarea>
+          </div>
+          <div class="field">
+            <label class="field-label">Trigger</label>
+            <select class="input sel"><option>Every Monday at 9am</option><option>Daily</option><option>Manual only</option></select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost">Cancel</button>
+          <button class="btn btn-primary">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 4v12M4 10h12"/></svg>
+            Create workflow
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TOOLTIP -->
+  <section class="section" id="tooltip">
+    <div class="section-header">
+      <h2 class="section-title">Tooltip &amp; Popover</h2>
+      <p class="section-desc">Tooltips use surface-container-highest — the topmost depth layer. 200ms delay on show. Popover adds a header and action, uses the same surface token.</p>
+    </div>
+    <p class="sub-label">Tooltip positions</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;padding:48px 32px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);margin-bottom:24px;justify-content:center">
+      <div class="tt-wrap">
+        <button class="btn btn-secondary btn-sm">Top</button>
+        <div class="tooltip tt-top">Runs every 15 minutes<div class="tt-arrow tt-arrow-top"></div></div>
+      </div>
+      <div class="tt-wrap">
+        <button class="btn btn-secondary btn-sm">Bottom</button>
+        <div class="tooltip tt-bottom">Last run 3 minutes ago<div class="tt-arrow tt-arrow-bottom"></div></div>
+      </div>
+      <div class="tt-wrap">
+        <button class="btn btn-secondary btn-sm">Left</button>
+        <div class="tooltip tt-left">View agent logs<div class="tt-arrow tt-arrow-left"></div></div>
+      </div>
+      <div class="tt-wrap">
+        <button class="btn btn-secondary btn-sm">Right</button>
+        <div class="tooltip tt-right">Deploy to production<div class="tt-arrow tt-arrow-right"></div></div>
+      </div>
+    </div>
+    <p class="sub-label">Popover</p>
+    <div style="padding:48px 32px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);display:flex;justify-content:center">
+      <div style="position:relative;display:inline-block">
+        <button class="btn btn-secondary">Agent info</button>
+        <div class="popover">
+          <div class="popover-header">
+            <span class="popover-title">Email Engagement Agent</span>
+            <span class="badge badge-active" style="margin-left:auto"><span class="badge-dot"></span>Active</span>
+          </div>
+          <div style="font-size:12px;color:var(--on-surface-variant);line-height:1.6;margin-bottom:12px">Monitors inbox, drafts replies, and routes qualified leads to CRM. Runs every 15 minutes.</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--outline);padding-top:10px;border-top:1px solid var(--outline-variant)">
+            <span>42 tasks today</span>
+            <button class="btn btn-ghost btn-sm">View details →</button>
+          </div>
+          <div class="tt-arrow tt-arrow-bottom" style="left:24px;right:auto"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- DATA TABLE -->
+  <section class="section" id="table">
+    <div class="section-header">
+      <h2 class="section-title">Data Table</h2>
+      <p class="section-desc">Column headers use label-md (11px 600 uppercase 0.08em). Row text uses body-sm. Alternating row tint optional. Sortable headers show caret on hover.</p>
+    </div>
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="th-sort" onclick="sortTable(0)">Agent <svg viewBox="0 0 10 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1v10M2 8l3 3 3-3"/></svg></th>
+            <th>Status</th>
+            <th class="th-sort" onclick="sortTable(2)">Tasks today <svg viewBox="0 0 10 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1v10M2 8l3 3 3-3"/></svg></th>
+            <th class="th-sort" onclick="sortTable(3)">Last run <svg viewBox="0 0 10 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1v10M2 8l3 3 3-3"/></svg></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr><td>Email Engagement Agent</td><td><span class="badge badge-active"><span class="badge-dot"></span>Active</span></td><td>42</td><td>2m ago</td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+          <tr><td>Market Research Workflow</td><td><span class="badge badge-running"><span class="badge-dot"></span>Running</span></td><td>7</td><td>Running now</td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+          <tr><td>Invoice Processing</td><td><span class="badge badge-completed"><span class="badge-dot"></span>Completed</span></td><td>18</td><td>12m ago</td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+          <tr><td>CRM Sync Agent</td><td><span class="badge badge-paused"><span class="badge-dot"></span>Paused</span></td><td>0</td><td>2h ago</td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+          <tr><td>Lead Qualifier</td><td><span class="badge badge-error"><span class="badge-dot"></span>Error</span></td><td>3</td><td>45m ago</td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- EMPTY STATE -->
+  <section class="section" id="empty">
+    <div class="section-header">
+      <h2 class="section-title">Empty States</h2>
+      <p class="section-desc">Used when a list, table, or canvas has no content. Icon + headline + supporting text + single CTA. Never use primary button here — use secondary or ghost.</p>
+    </div>
+    <div class="variant-grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">
+      <div class="variant-wrap">
+        <div class="variant-meta">No workflows yet <span class="variant-tag">first-run</span></div>
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M7.5 11L16.5 7M7.5 13L16.5 17"/></svg>
+          </div>
+          <div class="empty-title">No workflows yet</div>
+          <div class="empty-desc">Build your first automated workflow to start saving time.</div>
+          <button class="btn btn-primary" style="margin-top:4px">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 4v12M4 10h12"/></svg>
+            New workflow
+          </button>
+        </div>
+        <p class="variant-hint">Primary CTA only here — first-run is the exception to the single-per-screen rule.</p>
+      </div>
+      <div class="variant-wrap">
+        <div class="variant-meta">No results <span class="variant-tag">search / filter</span></div>
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L19 19"/><path d="M8 10h4M10 8v4"/></svg>
+          </div>
+          <div class="empty-title">No results found</div>
+          <div class="empty-desc">Try adjusting your search or removing filters.</div>
+          <button class="btn btn-ghost" style="margin-top:4px">Clear filters</button>
+        </div>
+        <p class="variant-hint">Ghost CTA for search empty states — action is reversal, not creation.</p>
+      </div>
+      <div class="variant-wrap">
+        <div class="variant-meta">No activity <span class="variant-tag">log / history</span></div>
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M4 17l4-5 3 3 4-6 4 4"/><path d="M3 7h18"/></svg>
+          </div>
+          <div class="empty-title">No activity yet</div>
+          <div class="empty-desc">Run a workflow to see execution logs and results here.</div>
+        </div>
+        <p class="variant-hint">No CTA when the user has no action to take.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- PROGRESS + STEPS -->
+  <section class="section" id="progress">
+    <div class="section-header">
+      <h2 class="section-title">Progress &amp; Steps</h2>
+      <p class="section-desc">Linear progress bar for background tasks. Step indicator for multi-stage workflows and onboarding. Both use primary colour for active state.</p>
+    </div>
+    <p class="sub-label">Progress bar</p>
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:480px;margin-bottom:32px">
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--on-surface-variant);margin-bottom:6px"><span>Analysing sources</span><span style="color:var(--outline)">Step 4 of 7</span></div>
+        <div class="progress-track"><div class="progress-bar" style="width:57%"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--on-surface-variant);margin-bottom:6px"><span>Processing invoices</span><span style="color:var(--outline)">18 / 18</span></div>
+        <div class="progress-track"><div class="progress-bar" style="width:100%;background:var(--success)"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--on-surface-variant);margin-bottom:6px"><span>Indeterminate — loading</span><span></span></div>
+        <div class="progress-track" style="overflow:hidden"><div class="progress-bar progress-indeterminate"></div></div>
+      </div>
+    </div>
+    <p class="sub-label">Step indicator</p>
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <div class="steps">
+        <div class="step step-done"><div class="step-dot"><svg width="10" height="10" viewBox="0 0 10 8" fill="none" stroke="white" stroke-width="1.8"><path d="M1 4L3.5 6.5 9 1"/></svg></div><div class="step-content"><div class="step-label">Connect trigger</div><div class="step-sub">Gmail · schedule</div></div></div>
+        <div class="step-line step-line-done"></div>
+        <div class="step step-done"><div class="step-dot"><svg width="10" height="10" viewBox="0 0 10 8" fill="none" stroke="white" stroke-width="1.8"><path d="M1 4L3.5 6.5 9 1"/></svg></div><div class="step-content"><div class="step-label">Configure agent</div><div class="step-sub">Inbox reader</div></div></div>
+        <div class="step-line step-line-done"></div>
+        <div class="step step-active"><div class="step-dot step-dot-active">3</div><div class="step-content"><div class="step-label">Add actions</div><div class="step-sub">In progress</div></div></div>
+        <div class="step-line"></div>
+        <div class="step step-pending"><div class="step-dot step-dot-pending">4</div><div class="step-content"><div class="step-label">Test &amp; deploy</div><div class="step-sub">Not started</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TABS -->
+  <section class="section" id="tabs">
+    <div class="section-header">
+      <h2 class="section-title">Tabs</h2>
+      <p class="section-desc">Used for switching between views within the same context. Active tab uses on-surface text with a primary bottom border. Never use tabs for navigation between pages.</p>
+    </div>
+    <p class="sub-label">Default tabs</p>
+    <div style="margin-bottom:24px">
+      <div class="tab-bar" id="tabs1">
+        <button class="tab active" onclick="setTab('tabs1',this)">Overview</button>
+        <button class="tab" onclick="setTab('tabs1',this)">Runs</button>
+        <button class="tab" onclick="setTab('tabs1',this)">Logs</button>
+        <button class="tab" onclick="setTab('tabs1',this)">Settings</button>
+      </div>
+      <div style="padding:20px;background:var(--surface-container);border:1px solid var(--outline-variant);border-top:none;border-radius:0 0 var(--rounded-md) var(--rounded-md)">
+        <div style="font-size:13px;color:var(--on-surface-variant)">Tab panel content — swap with Run history, log output, or settings form.</div>
+      </div>
+    </div>
+    <p class="sub-label">Tabs with counts</p>
+    <div style="margin-bottom:24px">
+      <div class="tab-bar" id="tabs2">
+        <button class="tab active" onclick="setTab('tabs2',this)">All <span class="tab-count">24</span></button>
+        <button class="tab" onclick="setTab('tabs2',this)">Running <span class="tab-count tab-count-primary">3</span></button>
+        <button class="tab" onclick="setTab('tabs2',this)">Errors <span class="tab-count tab-count-error">2</span></button>
+        <button class="tab" onclick="setTab('tabs2',this)">Paused <span class="tab-count">5</span></button>
+      </div>
+      <div style="padding:20px;background:var(--surface-container);border:1px solid var(--outline-variant);border-top:none;border-radius:0 0 var(--rounded-md) var(--rounded-md)">
+        <div style="font-size:13px;color:var(--on-surface-variant)">Filtered agent list.</div>
+      </div>
+    </div>
+    <p class="sub-label">Pill tabs</p>
+    <div class="tab-pills" id="tabs3">
+      <button class="tab-pill active" onclick="setPillTab('tabs3',this)">Day</button>
+      <button class="tab-pill" onclick="setPillTab('tabs3',this)">Week</button>
+      <button class="tab-pill" onclick="setPillTab('tabs3',this)">Month</button>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- BREADCRUMB -->
+  <section class="section" id="breadcrumb">
+    <div class="section-header">
+      <h2 class="section-title">Breadcrumb</h2>
+      <p class="section-desc">Wayfinding for nested product contexts. Body-sm size. Current page is non-interactive on-surface text; ancestors are on-surface-variant links.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="breadcrumb">
+        <a class="bc-item" href="#">intelligent-machines</a>
+        <span class="bc-sep">/</span>
+        <a class="bc-item" href="#">Workflows</a>
+        <span class="bc-sep">/</span>
+        <span class="bc-current">Email Engagement Agent</span>
+      </div>
+      <div class="breadcrumb">
+        <a class="bc-item" href="#">intelligent-machines</a>
+        <span class="bc-sep">/</span>
+        <a class="bc-item" href="#">Settings</a>
+        <span class="bc-sep">/</span>
+        <a class="bc-item" href="#">Integrations</a>
+        <span class="bc-sep">/</span>
+        <span class="bc-current">Gmail OAuth</span>
+      </div>
+      <div class="breadcrumb">
+        <a class="bc-item" href="#" style="display:flex;align-items:center;gap:4px">
+          <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10h14M3 10l5-5M3 10l5 5"/></svg>
+          Back to Workflows
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CALLOUT -->
+  <section class="section" id="callout">
+    <div class="section-header">
+      <h2 class="section-title">Callout &amp; Disclosure</h2>
+      <p class="section-desc">Callouts surface important guidance inline. Disclosures collapse secondary content to reduce visual noise. Both reduce cognitive load without hiding critical information.</p>
+    </div>
+    <p class="sub-label">Callout variants</p>
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:640px;margin-bottom:32px">
+      <div class="callout callout-tip">
+        <svg class="callout-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 6v5M10 13h.01"/></svg>
+        <div><strong>Tip</strong> — Keep each agent focused on a single task. Composing several small agents produces more reliable results than one large agent attempting everything.</div>
+      </div>
+      <div class="callout callout-warning">
+        <svg class="callout-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10 3L2 17h16L10 3z"/><path d="M10 9v4M10 15h.01"/></svg>
+        <div><strong>Warning</strong> — Deleting a workflow also removes all associated run history. This cannot be undone.</div>
+      </div>
+      <div class="callout callout-note">
+        <svg class="callout-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="3" width="12" height="14" rx="1.5"/><path d="M7 7h6M7 10h6M7 13h4"/></svg>
+        <div><strong>Note</strong> — Workflow runs are billed per task completion, not per execution. An agent that completes 0 tasks in a run incurs no charge.</div>
+      </div>
+    </div>
+    <p class="sub-label">Disclosure / Expandable</p>
+    <div style="display:flex;flex-direction:column;gap:6px;max-width:640px">
+      <div class="disclosure open">
+        <button class="disclosure-trigger" onclick="toggleDisclosure(this)">
+          <svg class="disclosure-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4l3 4 3-4"/></svg>
+          Advanced trigger options
+        </button>
+        <div class="disclosure-body">
+          <div class="field" style="max-width:280px">
+            <label class="field-label">Cron expression</label>
+            <input class="input" style="font-family:'JetBrains Mono',monospace;font-size:12px" value="0 9 * * 1-5" placeholder="0 9 * * 1-5">
+            <span class="field-hint">Runs weekdays at 9am. <a href="#" style="color:var(--primary)">Cron syntax reference</a></span>
+          </div>
+        </div>
+      </div>
+      <div class="disclosure">
+        <button class="disclosure-trigger" onclick="toggleDisclosure(this)">
+          <svg class="disclosure-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4l3 4 3-4"/></svg>
+          Environment variables
+        </button>
+        <div class="disclosure-body" style="display:none">
+          <div style="font-size:13px;color:var(--on-surface-variant)">No environment variables configured.</div>
+        </div>
+      </div>
+      <div class="disclosure">
+        <button class="disclosure-trigger" onclick="toggleDisclosure(this)">
+          <svg class="disclosure-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4l3 4 3-4"/></svg>
+          Run history (18)
+        </button>
+        <div class="disclosure-body" style="display:none">
+          <div style="font-size:13px;color:var(--on-surface-variant)">Expand to see individual run logs.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TIMELINE -->
+  <section class="section" id="timeline">
+    <div class="section-header">
+      <h2 class="section-title">Timeline</h2>
+      <p class="section-desc">Chronological activity and run logs. Timestamps use mono type. Dot colour maps to the same semantic token as badges.</p>
+    </div>
+    <div style="max-width:560px">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--success)"></div>
+          <div class="tl-content">
+            <div class="tl-header"><span class="tl-title">Run completed</span><span class="tl-time">09:14:25</span></div>
+            <div class="tl-body">Processed 50 emails — 12 actionable, 4 leads routed to CRM.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--primary);animation:bpulse 1.5s ease infinite"></div>
+          <div class="tl-content">
+            <div class="tl-header"><span class="tl-title">Agent running</span><span class="tl-time">09:14:22</span></div>
+            <div class="tl-body">Step 3/4 — routing leads to HubSpot CRM.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--outline)"></div>
+          <div class="tl-content">
+            <div class="tl-header"><span class="tl-title">Trigger fired</span><span class="tl-time">09:14:20</span></div>
+            <div class="tl-body">Schedule trigger · every 15 minutes.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--error)"></div>
+          <div class="tl-content">
+            <div class="tl-header"><span class="tl-title">Run failed</span><span class="tl-time">09:00:03</span></div>
+            <div class="tl-body">Auth token expired — Gmail OAuth requires re-authorisation.</div>
+            <button class="btn btn-secondary btn-sm" style="margin-top:8px">View error →</button>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--outline)"></div>
+          <div class="tl-content">
+            <div class="tl-header"><span class="tl-title">Agent deployed</span><span class="tl-time">08:45:11</span></div>
+            <div class="tl-body">Email Engagement Agent activated by Rick O.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- COMPARISON TABLE -->
+  <section class="section" id="comparison">
+    <div class="section-header">
+      <h2 class="section-title">Comparison Table</h2>
+      <p class="section-desc">Side-by-side comparison of approaches, plans, or options. Check / cross indicators use semantic colours. First column is the feature axis; subsequent columns are the options.</p>
+    </div>
+    <div class="data-table-wrap" style="max-width:680px">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:38%">Feature</th>
+            <th style="text-align:center">Starter</th>
+            <th style="text-align:center">Pro</th>
+            <th style="text-align:center">Enterprise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--on-surface);font-weight:500">Active agents</td>
+            <td style="text-align:center;color:var(--on-surface-variant)">3</td>
+            <td style="text-align:center;color:var(--on-surface-variant)">20</td>
+            <td style="text-align:center;color:var(--on-surface-variant)">Unlimited</td>
+          </tr>
+          <tr>
+            <td style="color:var(--on-surface);font-weight:500">Tasks / month</td>
+            <td style="text-align:center;color:var(--on-surface-variant)">5,000</td>
+            <td style="text-align:center;color:var(--on-surface-variant)">100,000</td>
+            <td style="text-align:center;color:var(--on-surface-variant)">Custom</td>
+          </tr>
+          <tr>
+            <td style="color:var(--on-surface);font-weight:500">Custom integrations</td>
+            <td style="text-align:center"><span style="color:var(--outline)">—</span></td>
+            <td style="text-align:center"><span style="color:var(--success);font-weight:700">✓</span></td>
+            <td style="text-align:center"><span style="color:var(--success);font-weight:700">✓</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--on-surface);font-weight:500">Approval workflows</td>
+            <td style="text-align:center"><span style="color:var(--outline)">—</span></td>
+            <td style="text-align:center"><span style="color:var(--success);font-weight:700">✓</span></td>
+            <td style="text-align:center"><span style="color:var(--success);font-weight:700">✓</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--on-surface);font-weight:500">SSO / SAML</td>
+            <td style="text-align:center"><span style="color:var(--outline)">—</span></td>
+            <td style="text-align:center"><span style="color:var(--outline)">—</span></td>
+            <td style="text-align:center"><span style="color:var(--success);font-weight:700">✓</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--on-surface);font-weight:500">Priority support</td>
+            <td style="text-align:center"><span style="color:var(--outline)">—</span></td>
+            <td style="text-align:center"><span style="color:var(--outline)">—</span></td>
+            <td style="text-align:center"><span style="color:var(--success);font-weight:700">✓</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- DIFF CODE BLOCK -->
+  <section class="section" id="diff">
+    <div class="section-header">
+      <h2 class="section-title">Diff &amp; Annotated Code</html>
+      <p class="section-desc">Used in workflow change logs, configuration reviews, and PR writeups. Added lines use success tint, removed lines use error tint. Hunk headers use outline colour.</p>
+    </div>
+    <p class="sub-label">Workflow config diff</p>
+    <div class="diff-block" style="max-width:680px">
+      <div class="diff-header">
+        <span class="diff-filename">workflow.json</span>
+        <span class="diff-meta">+4 −2</span>
+      </div>
+      <div class="diff-body">
+        <div class="diff-hunk">@@ -12,7 +12,9 @@ steps</div>
+        <div class="diff-line diff-ctx">  { "agent": "inbox_reader", "limit": 50 },</div>
+        <div class="diff-line diff-del"><span class="diff-gutter">−</span>  { "agent": "reply_drafter", "tone": "casual" }</div>
+        <div class="diff-line diff-del"><span class="diff-gutter">−</span>  { "agent": "crm_router" }</div>
+        <div class="diff-line diff-add"><span class="diff-gutter">+</span>  { "agent": "reply_drafter", "tone": "professional" },</div>
+        <div class="diff-line diff-add"><span class="diff-gutter">+</span>  { "agent": "lead_qualifier", "threshold": 0.7 },</div>
+        <div class="diff-line diff-add"><span class="diff-gutter">+</span>  { "agent": "crm_router", "pipeline": "inbound" },</div>
+        <div class="diff-line diff-add"><span class="diff-gutter">+</span>  { "agent": "notification_sender" }</div>
+        <div class="diff-line diff-ctx">]</div>
+      </div>
+    </div>
+    <p class="sub-label" style="margin-top:28px">Inline annotation</p>
+    <div class="code-block" style="max-width:680px;position:relative">
+<span class="cm">// agent.ts — step executor</span>
+<span class="kw">async function</span> <span class="str">runStep</span>(step: Step, ctx: Context) {
+  <span class="kw">const</span> agent = <span class="kw">await</span> registry.<span class="str">load</span>(step.agent); <span class="annotation">← lazy-loaded per run</span>
+  <span class="kw">const</span> result = <span class="kw">await</span> agent.<span class="str">execute</span>(ctx);
+  <span class="kw">if</span> (!result.ok) <span class="kw">throw new</span> <span class="str">AgentError</span>(result.error); <span class="annotation">← bubbles to run log</span>
+  <span class="kw">return</span> result.output;
+}</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- DRAG-AND-DROP LIST -->
+  <section class="section" id="dnd">
+    <div class="section-header">
+      <h2 class="section-title">Sortable List</h2>
+      <p class="section-desc">Used for reordering workflow steps. Grip affordance on hover. Dragging state: 2deg tilt + reduced opacity. Drop indicator is a 2px primary line.</p>
+    </div>
+    <div style="max-width:480px">
+      <div class="dnd-list" id="dnd-list">
+        <div class="dnd-item" draggable="true">
+          <div class="dnd-grip"><svg viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.2"/><circle cx="6" cy="2" r="1.2"/><circle cx="2" cy="7" r="1.2"/><circle cx="6" cy="7" r="1.2"/><circle cx="2" cy="12" r="1.2"/><circle cx="6" cy="12" r="1.2"/></svg></div>
+          <div class="dnd-icon" style="background:rgba(0,212,196,0.12)"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#00D4C4" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 6v5l3 2"/></svg></div>
+          <div class="dnd-text"><div class="dnd-title">Schedule trigger</div><div class="dnd-sub">Every 15 minutes</div></div>
+          <span class="dnd-step">Step 1</span>
+        </div>
+        <div class="dnd-item" draggable="true">
+          <div class="dnd-grip"><svg viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.2"/><circle cx="6" cy="2" r="1.2"/><circle cx="2" cy="7" r="1.2"/><circle cx="6" cy="7" r="1.2"/><circle cx="2" cy="12" r="1.2"/><circle cx="6" cy="12" r="1.2"/></svg></div>
+          <div class="dnd-icon" style="background:rgba(37,99,255,0.12)"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#2563FF" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h7"/></svg></div>
+          <div class="dnd-text"><div class="dnd-title">Process inbox</div><div class="dnd-sub">Filter · summarise</div></div>
+          <span class="dnd-step">Step 2</span>
+        </div>
+        <div class="dnd-item dnd-dragging" draggable="true">
+          <div class="dnd-grip"><svg viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.2"/><circle cx="6" cy="2" r="1.2"/><circle cx="2" cy="7" r="1.2"/><circle cx="6" cy="7" r="1.2"/><circle cx="2" cy="12" r="1.2"/><circle cx="6" cy="12" r="1.2"/></svg></div>
+          <div class="dnd-icon" style="background:rgba(37,99,255,0.12)"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#2563FF" stroke-width="1.5" stroke-linecap="round"><path d="M4 10h12M10 4l6 6-6 6"/></svg></div>
+          <div class="dnd-text"><div class="dnd-title">Draft reply</div><div class="dnd-sub">← dragging state preview</div></div>
+          <span class="dnd-step">Step 3</span>
+        </div>
+        <div class="dnd-drop-indicator"></div>
+        <div class="dnd-item" draggable="true">
+          <div class="dnd-grip"><svg viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.2"/><circle cx="6" cy="2" r="1.2"/><circle cx="2" cy="7" r="1.2"/><circle cx="6" cy="7" r="1.2"/><circle cx="2" cy="12" r="1.2"/><circle cx="6" cy="12" r="1.2"/></svg></div>
+          <div class="dnd-icon" style="background:rgba(123,60,255,0.12)"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#7B3CFF" stroke-width="1.5" stroke-linecap="round"><path d="M5 4h10v2l-3 3v5l-4 2V9L5 6V4z"/></svg></div>
+          <div class="dnd-text"><div class="dnd-title">Route to CRM</div><div class="dnd-sub">HubSpot · inbound pipeline</div></div>
+          <span class="dnd-step">Step 4</span>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--outline);margin-top:10px">Step 3 shown in dragging state. Drop indicator shown as 2px primary line.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- FEATURE FLAGS -->
+  <section class="section" id="flags">
+    <div class="section-header">
+      <h2 class="section-title">Feature Flag Rows</h2>
+      <p class="section-desc">Per-flag rows for agent and workflow configuration. Each row shows the flag name, description, dependency warning if applicable, and a toggle. Changes tracked with a counter badge.</p>
+    </div>
+    <div style="max-width:640px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <span style="font-size:13px;font-weight:600;color:var(--on-surface)">Agent configuration</span>
+        <span class="badge badge-running" id="flag-count" style="display:none"><span class="badge-dot"></span><span id="flag-count-n">0</span> changed</span>
+      </div>
+      <div class="flag-list">
+        <div class="flag-row">
+          <div class="flag-text">
+            <div class="flag-name">Enable approval gate</div>
+            <div class="flag-desc">Require human review before sending replies. Adds latency but prevents mis-sends.</div>
+          </div>
+          <div class="toggle on flag-toggle" onclick="toggleFlag(this)"></div>
+        </div>
+        <div class="flag-row">
+          <div class="flag-text">
+            <div class="flag-name">Dry run mode</div>
+            <div class="flag-desc">Execute all steps but skip external API calls. Safe for testing.</div>
+          </div>
+          <div class="toggle flag-toggle" onclick="toggleFlag(this)"></div>
+        </div>
+        <div class="flag-row">
+          <div class="flag-text">
+            <div class="flag-name">Verbose logging</div>
+            <div class="flag-desc">Log every step input and output. High storage usage — disable in production.</div>
+            <div class="flag-warn">
+              <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10 3L2 17h16L10 3z"/><path d="M10 9v4"/></svg>
+              Depends on <code style="font-family:'JetBrains Mono',monospace;font-size:10px">storage.quota</code> ≥ 10 GB
+            </div>
+          </div>
+          <div class="toggle flag-toggle" onclick="toggleFlag(this)"></div>
+        </div>
+        <div class="flag-row">
+          <div class="flag-text">
+            <div class="flag-name">Auto-retry on failure</div>
+            <div class="flag-desc">Retry failed steps up to 3 times with exponential backoff.</div>
+          </div>
+          <div class="toggle on flag-toggle" onclick="toggleFlag(this)"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- NAVIGATION -->
+  <section class="section" id="nav">
+    <div class="section-header">
+      <h2 class="section-title">Navigation</h2>
+      <p class="section-desc">Sidebar nav items at rest, hover, and active. Section labels use label-md (outline colour). Active items fill surface-container-high.</p>
+    </div>
+
+    <div class="row" style="align-items:flex-start">
+      <div class="nav-demo">
+        <div class="nav-section-lbl">Foundations</div>
+        <a class="nav-item-demo active" href="#">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:15px;height:15px"><circle cx="10" cy="10" r="7"/><path d="M10 3v14M3 10h14"/></svg>
+          Colors
+        </a>
+        <a class="nav-item-demo" href="#">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:15px;height:15px"><path d="M4 5h12M10 5v10M7 15h6"/></svg>
+          Typography
+        </a>
+        <a class="nav-item-demo" href="#">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:15px;height:15px"><rect x="4" y="4" width="12" height="12" rx="4"/></svg>
+          Radius
+        </a>
+        <div class="nav-section-lbl">Components</div>
+        <a class="nav-item-demo" href="#">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:15px;height:15px"><rect x="3" y="7" width="14" height="6" rx="3"/></svg>
+          Buttons
+        </a>
+        <a class="nav-item-demo" href="#">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:15px;height:15px"><rect x="3" y="4" width="14" height="12" rx="2"/><path d="M3 8h14"/></svg>
+          Cards
+        </a>
+      </div>
+      <div class="col" style="font-size:12px;color:var(--on-surface-variant);max-width:260px;gap:10px">
+        <div style="padding:10px 12px;background:var(--surface-container);border-radius:var(--rounded);border:1px solid var(--outline-variant)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--outline);margin-bottom:8px">Token map</div>
+          <div style="display:flex;flex-direction:column;gap:5px;font-size:11px;font-family:'JetBrains Mono',monospace">
+            <div><span style="color:var(--outline)">bg</span> <span style="color:var(--on-surface-variant)">--surface</span></div>
+            <div><span style="color:var(--outline)">rest</span> <span style="color:var(--on-surface-variant)">--on-surface-variant</span></div>
+            <div><span style="color:var(--outline)">hover bg</span> <span style="color:var(--on-surface-variant)">--surface-container-high</span></div>
+            <div><span style="color:var(--outline)">active bg</span> <span style="color:var(--on-surface-variant)">--surface-container-high</span></div>
+            <div><span style="color:var(--outline)">active txt</span> <span style="color:var(--on-surface-variant)">--on-surface</span></div>
+            <div><span style="color:var(--outline)">section lbl</span> <span style="color:var(--on-surface-variant)">--outline</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+function updateCardPad(v) {
+  document.getElementById('pad-val').textContent = v + 'px';
+  document.querySelectorAll('.card-demo').forEach(c => {
+    c.style.setProperty('--p', v + 'px');
+    c.style.padding = v + 'px';
+    if (c.classList.contains('card-accent-stripe')) {
+      c.style.paddingTop = (parseInt(v) - 3) + 'px';
+    }
+  });
+}
+
+function toggleCardHover(on) {
+  document.querySelectorAll('.card-demo').forEach(c => {
+    c.style.borderColor = on ? 'var(--outline)' : '';
+    c.style.background = on ? 'var(--surface-container-high)' : '';
+    c.style.transform = on && c.classList.contains('card-elevated') ? 'translateY(-1px)' : '';
+  });
+}
+function toggleCardShadow(on) {
+  document.querySelectorAll('.card-demo').forEach(c => {
+    c.style.boxShadow = on ? '0 4px 16px rgba(0,0,0,0.18)' : '';
+  });
+}
+function setCardBorder(mode, btn) {
+  document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card-demo').forEach(c => {
+    if (mode === 'none') { c.style.borderColor = 'transparent'; }
+    else if (mode === 'hairline') { c.style.borderColor = 'var(--outline-variant)'; c.style.borderWidth = '1px'; }
+    else { c.style.borderColor = 'var(--outline)'; c.style.borderWidth = '1px'; }
+  });
+}
+
+function setTab(groupId, btn) {
+  document.querySelectorAll('#' + groupId + ' .tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+function setPillTab(groupId, btn) {
+  document.querySelectorAll('#' + groupId + ' .tab-pill').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+function toggleDisclosure(btn) {
+  const d = btn.closest('.disclosure');
+  const body = d.querySelector('.disclosure-body');
+  const open = d.classList.toggle('open');
+  body.style.display = open ? '' : 'none';
+}
+let flagChanges = 0;
+function toggleFlag(el) {
+  el.classList.toggle('on');
+  flagChanges = document.querySelectorAll('.flag-toggle.on').length;
+  const badge = document.getElementById('flag-count');
+  document.getElementById('flag-count-n').textContent = flagChanges;
+  badge.style.display = 'inline-flex';
+}
+
+let isLight = false;
+const moonIcon = `<svg id="theme-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M17 11.5A7 7 0 1 1 8.5 3 5.5 5.5 0 0 0 17 11.5z"/></svg>`;
+const sunIcon = `<svg id="theme-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="4"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.9 4.9l1.4 1.4M13.7 13.7l1.4 1.4M4.9 15.1l1.4-1.4M13.7 6.3l1.4-1.4"/></svg>`;
+function toggleTheme() {
+  isLight = !isLight;
+  document.getElementById('theme-css').href = isLight ? 'tokens-light.css' : 'tokens.css';
+  document.getElementById('theme-label').textContent = isLight ? 'Dark' : 'Light';
+  document.getElementById('theme-icon').outerHTML = isLight ? moonIcon : sunIcon;
+}
+</script>
+</body>
+</html>

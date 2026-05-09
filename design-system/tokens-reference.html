@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>intelligent-machines — Token Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link id="theme-css" rel="stylesheet" href="tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--background);color:var(--on-surface);font-size:15px;line-height:1.6}
+
+/* Page shell */
+.page{max-width:1000px;margin:0 auto;padding:64px 48px}
+@media(max-width:700px){.page{padding:32px 20px}}
+
+/* Header */
+.page-header{margin-bottom:64px;padding-bottom:32px;border-bottom:1px solid var(--outline-variant)}
+.brand-mark{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.brand-icon{width:36px;height:36px;background:var(--gradient-primary);border-radius:var(--rounded);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-icon svg{width:20px;height:20px}
+.brand-name{font-size:14px;font-weight:600;letter-spacing:-0.01em;color:var(--on-surface)}
+.brand-label{font-size:11px;color:var(--outline);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px}
+.page-title{font-size:32px;font-weight:700;letter-spacing:-0.03em;margin-bottom:10px}
+.page-desc{font-size:15px;color:var(--on-surface-variant);max-width:560px;line-height:1.65}
+.version-row{display:flex;align-items:center;gap:10px;margin-top:18px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:3px 10px;border-radius:var(--rounded-full);background:rgba(37,99,255,0.12);color:var(--primary)}
+.chip-teal{background:rgba(0,212,196,0.1);color:var(--secondary)}
+
+/* Section */
+.section{margin-bottom:72px;scroll-margin-top:24px}
+.section-header{margin-bottom:28px}
+.section-title{font-size:20px;font-weight:600;letter-spacing:-0.02em;margin-bottom:6px}
+.section-desc{font-size:13px;color:var(--on-surface-variant);line-height:1.6}
+hr.divider{border:none;border-top:1px solid var(--outline-variant);margin-bottom:40px}
+
+/* Sub-label */
+.sub-label{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--outline);margin-bottom:14px;margin-top:28px}
+.sub-label:first-child{margin-top:0}
+
+/* Color swatches */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px}
+.swatch{border-radius:var(--rounded-md);overflow:hidden;border:1px solid var(--outline-variant);cursor:pointer;transition:border-color 150ms var(--ease)}
+.swatch:hover{border-color:var(--outline)}
+.swatch-color{height:64px;position:relative;display:flex;align-items:flex-end;padding:6px 8px}
+.swatch-copy-hint{font-size:10px;color:rgba(255,255,255,0.5);opacity:0;transition:opacity 150ms}
+.swatch:hover .swatch-copy-hint{opacity:1}
+.swatch-body{background:var(--surface-container);padding:10px 12px}
+.swatch-name{font-size:12px;font-weight:600;color:var(--on-surface);margin-bottom:2px}
+.swatch-token{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--on-surface-variant);margin-bottom:2px}
+.swatch-hex{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--outline)}
+.swatch.copied .swatch-body{background:rgba(0,212,196,0.08)}
+.swatch.copied .swatch-hex{color:var(--secondary)}
+
+/* Gradient strips */
+.gradient-strip{height:48px;border-radius:var(--rounded);margin-bottom:8px;position:relative;overflow:hidden}
+.gradient-strip-label{font-size:12px;color:var(--on-surface-variant);margin-bottom:20px}
+.gradient-strip.animated{background:linear-gradient(90deg,transparent,#00D4C4,#2563FF,#7B3CFF,transparent);background-size:200% 100%;animation:flow 2.5s linear infinite}
+@keyframes flow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(37,99,255,0.4)}50%{opacity:0.7;box-shadow:0 0 0 4px rgba(37,99,255,0)}}
+
+/* Typography specimens */
+.type-row{padding:20px 0;border-bottom:1px solid var(--outline-variant)}
+.type-row:last-child{border-bottom:none}
+.type-specimen{margin-bottom:10px}
+.type-tags{display:flex;flex-wrap:wrap;gap:6px}
+.type-tag{font-size:10px;font-family:'JetBrains Mono',monospace;background:var(--surface-container);color:var(--outline);padding:2px 8px;border-radius:var(--rounded-sm)}
+.type-tag.highlight{background:rgba(37,99,255,0.1);color:var(--primary)}
+
+/* Spacing scale */
+.spacing-list{display:flex;flex-direction:column;gap:6px}
+.spacing-row{display:flex;align-items:center;gap:16px}
+.spacing-token{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--on-surface-variant);width:120px;flex-shrink:0}
+.spacing-bar-wrap{flex:1;height:20px;display:flex;align-items:center}
+.spacing-bar{height:16px;background:rgba(37,99,255,0.18);border-right:2px solid var(--primary);border-radius:0 var(--rounded-sm) var(--rounded-sm) 0;position:relative}
+.spacing-px{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--outline);margin-left:10px;flex-shrink:0}
+
+/* Radius */
+.radius-grid{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end}
+.radius-item{display:flex;flex-direction:column;align-items:center;gap:10px}
+.radius-box{background:var(--surface-container-high);border:1px solid var(--outline)}
+.radius-meta{text-align:center}
+.radius-name{font-size:11px;color:var(--on-surface-variant);display:block;margin-bottom:2px}
+.radius-val{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--outline)}
+
+/* Motion */
+.motion-row{display:flex;align-items:center;gap:20px;padding:14px 0;border-bottom:1px solid var(--outline-variant)}
+.motion-row:last-child{border-bottom:none}
+.motion-label{font-size:13px;font-weight:600;color:var(--on-surface);width:120px;flex-shrink:0}
+.motion-track{flex:1;height:32px;background:var(--surface-container);border-radius:var(--rounded);position:relative;overflow:hidden;cursor:pointer;border:1px solid var(--outline-variant)}
+.motion-thumb{width:16px;height:16px;border-radius:50%;background:var(--gradient-primary);position:absolute;top:50%;transform:translateY(-50%);left:4px;transition:none}
+.motion-track:hover .motion-thumb{animation:none}
+.motion-track.play .motion-thumb{animation:var(--anim)}
+.motion-meta{width:200px;flex-shrink:0}
+.motion-value{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--outline)}
+
+/* Toast */
+#copy-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface-container-highest);border:1px solid var(--outline);color:var(--on-surface);font-size:13px;padding:9px 18px;border-radius:var(--rounded);opacity:0;transition:all 250ms var(--ease);pointer-events:none;z-index:100}
+#copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Theme toggle */
+.theme-toggle{position:fixed;top:20px;right:20px;z-index:200;display:flex;align-items:center;gap:8px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-full);padding:6px 14px;cursor:pointer;font-size:12px;font-weight:600;color:var(--on-surface-variant);transition:all 150ms var(--ease);font-family:'Inter',sans-serif}
+.theme-toggle:hover{border-color:var(--outline);color:var(--on-surface)}
+.theme-toggle svg{width:14px;height:14px;flex-shrink:0}
+
+/* Sticky toc */
+.toc{position:fixed;top:64px;right:32px;display:flex;flex-direction:column;gap:6px;z-index:10}
+@media(max-width:1200px){.toc{display:none}}
+.toc-item{font-size:11px;color:var(--outline);cursor:pointer;transition:color 150ms;padding:2px 0}
+.toc-item:hover,.toc-item.active{color:var(--on-surface-variant)}
+.toc-item.active{font-weight:600;color:var(--on-surface)}
+</style>
+</head>
+<body>
+
+<div id="copy-toast">Copied to clipboard</div>
+
+<button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" aria-label="Toggle light/dark theme">
+  <svg id="theme-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="4"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.9 4.9l1.4 1.4M13.7 13.7l1.4 1.4M4.9 15.1l1.4-1.4M13.7 6.3l1.4-1.4"/></svg>
+  <span id="theme-label">Light</span>
+</button>
+
+<nav class="toc" aria-label="On this page">
+  <a class="toc-item active" href="#colors">Colors</a>
+  <a class="toc-item" href="#gradients">Gradients</a>
+  <a class="toc-item" href="#typography">Typography</a>
+  <a class="toc-item" href="#spacing">Spacing</a>
+  <a class="toc-item" href="#radius">Radius</a>
+  <a class="toc-item" href="#motion">Motion</a>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <div class="brand-mark">
+      <div class="brand-icon">
+        <svg viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="4" cy="10" r="2"/>
+          <circle cx="16" cy="5" r="2"/>
+          <circle cx="16" cy="15" r="2"/>
+          <path d="M6 9.5l8-4M6 10.5l8 4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">intelligent-machines</div>
+        <div class="brand-label">Design Token Reference</div>
+      </div>
+    </div>
+    <h1 class="page-title">Design Tokens</h1>
+    <p class="page-desc">Canonical token values for colors, typography, spacing, radius, and motion. Click any color swatch to copy the hex value to your clipboard.</p>
+    <div class="version-row">
+      <span class="chip">v1.0</span>
+      <span class="chip chip-teal">Dark-mode first</span>
+    </div>
+  </header>
+
+  <!-- COLORS -->
+  <section class="section" id="colors">
+    <div class="section-header">
+      <h2 class="section-title">Colors</h2>
+      <p class="section-desc">All surface and accent tokens. The surface stack provides five depth levels through tonal shifts alone — no shadows required.</p>
+    </div>
+
+    <p class="sub-label">Surfaces</p>
+    <div class="swatch-grid">
+      <div class="swatch" data-hex="#0A0F1F" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#0A0F1F;border-bottom:1px solid rgba(255,255,255,0.05)"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Background</div><div class="swatch-token">--background</div><div class="swatch-hex">#0A0F1F</div></div>
+      </div>
+      <div class="swatch" data-hex="#0B0D12" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#0B0D12;border-bottom:1px solid rgba(255,255,255,0.05)"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Surface</div><div class="swatch-token">--surface</div><div class="swatch-hex">#0B0D12</div></div>
+      </div>
+      <div class="swatch" data-hex="#060810" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#060810;border-bottom:1px solid rgba(255,255,255,0.04)"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Surface Dim</div><div class="swatch-token">--surface-dim</div><div class="swatch-hex">#060810</div></div>
+      </div>
+      <div class="swatch" data-hex="#0D1020" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#0D1020;border-bottom:1px solid rgba(255,255,255,0.06)"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Container Low</div><div class="swatch-token">--surface-container-low</div><div class="swatch-hex">#0D1020</div></div>
+      </div>
+      <div class="swatch" data-hex="#111827" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#111827;border-bottom:1px solid rgba(255,255,255,0.08)"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Container</div><div class="swatch-token">--surface-container</div><div class="swatch-hex">#111827</div></div>
+      </div>
+      <div class="swatch" data-hex="#161D2E" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#161D2E;border-bottom:1px solid rgba(255,255,255,0.09)"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Container High</div><div class="swatch-token">--surface-container-high</div><div class="swatch-hex">#161D2E</div></div>
+      </div>
+      <div class="swatch" data-hex="#1A2035" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#1A2035;border-bottom:1px solid rgba(255,255,255,0.1)"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Container Highest</div><div class="swatch-token">--surface-container-highest</div><div class="swatch-hex">#1A2035</div></div>
+      </div>
+    </div>
+
+    <p class="sub-label">Text</p>
+    <div class="swatch-grid">
+      <div class="swatch" data-hex="#F0F4FF" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#F0F4FF"><span class="swatch-copy-hint" style="color:rgba(0,0,0,0.4)">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">On Surface</div><div class="swatch-token">--on-surface</div><div class="swatch-hex">#F0F4FF</div></div>
+      </div>
+      <div class="swatch" data-hex="#8B9CC8" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#8B9CC8"><span class="swatch-copy-hint" style="color:rgba(0,0,0,0.4)">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">On Surface Variant</div><div class="swatch-token">--on-surface-variant</div><div class="swatch-hex">#8B9CC8</div></div>
+      </div>
+      <div class="swatch" data-hex="#4B5580" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#4B5580"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Outline</div><div class="swatch-token">--outline</div><div class="swatch-hex">#4B5580</div></div>
+      </div>
+      <div class="swatch" data-hex="#2A3356" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#2A3356"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Outline Variant</div><div class="swatch-token">--outline-variant</div><div class="swatch-hex">#2A3356</div></div>
+      </div>
+    </div>
+
+    <p class="sub-label">Primary — Electric Blue</p>
+    <div class="swatch-grid">
+      <div class="swatch" data-hex="#2563FF" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#2563FF"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Primary</div><div class="swatch-token">--primary</div><div class="swatch-hex">#2563FF</div></div>
+      </div>
+      <div class="swatch" data-hex="#4D7FFF" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#4D7FFF"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Primary Fixed</div><div class="swatch-token">--primary-fixed</div><div class="swatch-hex">#4D7FFF</div></div>
+      </div>
+      <div class="swatch" data-hex="#1A44CC" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#1A44CC"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Primary Container</div><div class="swatch-token">--primary-container</div><div class="swatch-hex">#1A44CC</div></div>
+      </div>
+      <div class="swatch" data-hex="#BED0FF" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#BED0FF"><span class="swatch-copy-hint" style="color:rgba(0,0,0,0.4)">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">On Primary Container</div><div class="swatch-token">--on-primary-container</div><div class="swatch-hex">#BED0FF</div></div>
+      </div>
+      <div class="swatch" data-hex="#7BA5FF" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#7BA5FF"><span class="swatch-copy-hint" style="color:rgba(0,0,0,0.4)">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Inverse Primary</div><div class="swatch-token">--inverse-primary</div><div class="swatch-hex">#7BA5FF</div></div>
+      </div>
+    </div>
+
+    <p class="sub-label">Secondary — Teal</p>
+    <div class="swatch-grid">
+      <div class="swatch" data-hex="#00D4C4" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#00D4C4"><span class="swatch-copy-hint" style="color:rgba(0,0,0,0.4)">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Secondary</div><div class="swatch-token">--secondary</div><div class="swatch-hex">#00D4C4</div></div>
+      </div>
+      <div class="swatch" data-hex="#33DDCF" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#33DDCF"><span class="swatch-copy-hint" style="color:rgba(0,0,0,0.4)">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Secondary Fixed</div><div class="swatch-token">--secondary-fixed</div><div class="swatch-hex">#33DDCF</div></div>
+      </div>
+      <div class="swatch" data-hex="#009E92" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#009E92"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Secondary Container</div><div class="swatch-token">--secondary-container</div><div class="swatch-hex">#009E92</div></div>
+      </div>
+      <div class="swatch" data-hex="#B3FFF9" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#B3FFF9"><span class="swatch-copy-hint" style="color:rgba(0,0,0,0.4)">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">On Secondary Container</div><div class="swatch-token">--on-secondary-container</div><div class="swatch-hex">#B3FFF9</div></div>
+      </div>
+    </div>
+
+    <p class="sub-label">Tertiary — Violet</p>
+    <div class="swatch-grid">
+      <div class="swatch" data-hex="#7B3CFF" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#7B3CFF"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Tertiary</div><div class="swatch-token">--tertiary</div><div class="swatch-hex">#7B3CFF</div></div>
+      </div>
+      <div class="swatch" data-hex="#9966FF" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#9966FF"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Tertiary Fixed</div><div class="swatch-token">--tertiary-fixed</div><div class="swatch-hex">#9966FF</div></div>
+      </div>
+      <div class="swatch" data-hex="#5820D4" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#5820D4"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Tertiary Container</div><div class="swatch-token">--tertiary-container</div><div class="swatch-hex">#5820D4</div></div>
+      </div>
+      <div class="swatch" data-hex="#DDD0FF" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#DDD0FF"><span class="swatch-copy-hint" style="color:rgba(0,0,0,0.4)">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">On Tertiary Container</div><div class="swatch-token">--on-tertiary-container</div><div class="swatch-hex">#DDD0FF</div></div>
+      </div>
+    </div>
+
+    <p class="sub-label">Semantic</p>
+    <div class="swatch-grid">
+      <div class="swatch" data-hex="#10B981" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#10B981"><span class="swatch-copy-hint" style="color:rgba(0,0,0,0.4)">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Success</div><div class="swatch-token">--success</div><div class="swatch-hex">#10B981</div></div>
+      </div>
+      <div class="swatch" data-hex="#F59E0B" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#F59E0B"><span class="swatch-copy-hint" style="color:rgba(0,0,0,0.4)">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Warning</div><div class="swatch-token">--warning</div><div class="swatch-hex">#F59E0B</div></div>
+      </div>
+      <div class="swatch" data-hex="#EF4444" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#EF4444"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Error</div><div class="swatch-token">--error</div><div class="swatch-hex">#EF4444</div></div>
+      </div>
+      <div class="swatch" data-hex="#7F1D1D" onclick="copyHex(this)">
+        <div class="swatch-color" style="background:#7F1D1D"><span class="swatch-copy-hint">copy</span></div>
+        <div class="swatch-body"><div class="swatch-name">Error Container</div><div class="swatch-token">--error-container</div><div class="swatch-hex">#7F1D1D</div></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- GRADIENTS -->
+  <section class="section" id="gradients">
+    <div class="section-header">
+      <h2 class="section-title">Gradients</h2>
+      <p class="section-desc">The teal → blue → violet gradient is the brand's primary visual motif. Reserved for CTAs, flow lines, and the logo mark. Never used on surfaces or backgrounds.</p>
+    </div>
+
+    <div style="max-width:560px">
+      <div class="gradient-strip" style="background:linear-gradient(135deg,#00D4C4 0%,#2563FF 50%,#7B3CFF 100%)"></div>
+      <p class="gradient-strip-label">Primary — teal → blue → violet · <code style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--outline)">linear-gradient(135deg, #00D4C4, #2563FF, #7B3CFF)</code></p>
+
+      <div class="gradient-strip animated"></div>
+      <p class="gradient-strip-label">Flow (animated) — left-to-right sweep used on active workflow connectors and loading states</p>
+
+      <div style="height:48px;border-radius:var(--rounded);background:linear-gradient(90deg,#00D4C4,#2563FF,#7B3CFF);position:relative;overflow:hidden;margin-bottom:8px">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 18px">
+          <span style="font-size:13px;font-weight:600;color:#fff;letter-spacing:-0.01em">Start building →</span>
+        </div>
+      </div>
+      <p class="gradient-strip-label">Primary CTA button — gradient applied via <code style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--outline)">background:var(--gradient-primary)</code></p>
+
+      <div style="margin-top:24px;background:var(--surface-container);border-radius:var(--rounded-md);border:1px solid var(--outline-variant);padding:16px 20px">
+        <p style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--outline);margin-bottom:10px">tokens.css</p>
+        <p style="font-size:12px;font-family:'JetBrains Mono',monospace;line-height:1.8;color:var(--on-surface-variant)">
+          <span style="color:var(--outline)">--</span><span style="color:var(--secondary)">gradient-primary</span>: linear-gradient(135deg, <span style="color:var(--secondary)">#00D4C4</span> 0%, <span style="color:var(--primary)">#2563FF</span> 50%, <span style="color:var(--tertiary)">#7B3CFF</span> 100%);<br>
+          <span style="color:var(--outline)">--</span><span style="color:var(--secondary)">gradient-flow</span>: linear-gradient(90deg, <span style="color:var(--secondary)">#00D4C4</span>, <span style="color:var(--primary)">#2563FF</span>, <span style="color:var(--tertiary)">#7B3CFF</span>);
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TYPOGRAPHY -->
+  <section class="section" id="typography">
+    <div class="section-header">
+      <h2 class="section-title">Typography</h2>
+      <p class="section-desc">Inter throughout. Tight tracking on headings, generous line-height for body. JetBrains Mono reserved for system output: logs, traces, and config values.</p>
+    </div>
+
+    <div class="type-row">
+      <div class="type-specimen" style="font-size:56px;font-weight:700;letter-spacing:-0.04em;line-height:1.1">Display</div>
+      <div class="type-tags">
+        <span class="type-tag highlight">display</span>
+        <span class="type-tag">Inter 700</span>
+        <span class="type-tag">56px / 62px</span>
+        <span class="type-tag">−0.04em</span>
+        <span class="type-tag">hero headings only</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-specimen" style="font-size:40px;font-weight:700;letter-spacing:-0.03em;line-height:1.1">Headline Large</div>
+      <div class="type-tags">
+        <span class="type-tag highlight">headline-lg</span>
+        <span class="type-tag">Inter 700</span>
+        <span class="type-tag">40px / 44px</span>
+        <span class="type-tag">−0.03em</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-specimen" style="font-size:32px;font-weight:600;letter-spacing:-0.02em;line-height:1.19">Headline Medium</div>
+      <div class="type-tags">
+        <span class="type-tag highlight">headline-md</span>
+        <span class="type-tag">Inter 600</span>
+        <span class="type-tag">32px / 38px</span>
+        <span class="type-tag">−0.02em</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-specimen" style="font-size:24px;font-weight:600;letter-spacing:-0.01em;line-height:1.25">Headline Small</div>
+      <div class="type-tags">
+        <span class="type-tag highlight">headline-sm</span>
+        <span class="type-tag">Inter 600</span>
+        <span class="type-tag">24px / 30px</span>
+        <span class="type-tag">−0.01em</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-specimen" style="font-size:17px;line-height:1.65">Autonomous agents handle customer engagement, administration, and research so your team can focus on higher-value work.</div>
+      <div class="type-tags">
+        <span class="type-tag highlight">body-lg</span>
+        <span class="type-tag">Inter 400</span>
+        <span class="type-tag">17px / 1.65</span>
+        <span class="type-tag">prose</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-specimen" style="font-size:15px;line-height:1.6;color:var(--on-surface-variant)">Each agent receives a structured task, executes it using available tools, and returns a verifiable result to the workflow engine.</div>
+      <div class="type-tags">
+        <span class="type-tag highlight">body-md</span>
+        <span class="type-tag">Inter 400</span>
+        <span class="type-tag">15px / 1.6</span>
+        <span class="type-tag">default body text</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-specimen" style="font-size:13px;line-height:1.5;color:var(--on-surface-variant)">Last run 3 minutes ago · 14 tasks completed · 0 errors</div>
+      <div class="type-tags">
+        <span class="type-tag highlight">body-sm</span>
+        <span class="type-tag">Inter 400</span>
+        <span class="type-tag">13px / 1.5</span>
+        <span class="type-tag">secondary content</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-specimen" style="font-size:13px;font-weight:600;line-height:1.4">Label Large</div>
+      <div class="type-tags">
+        <span class="type-tag highlight">label-lg</span>
+        <span class="type-tag">Inter 600</span>
+        <span class="type-tag">13px</span>
+        <span class="type-tag">buttons, nav items</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-specimen" style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--outline)">Active Workflows · Section Label</div>
+      <div class="type-tags">
+        <span class="type-tag highlight">label-md</span>
+        <span class="type-tag">Inter 600</span>
+        <span class="type-tag">11px / 0.08em</span>
+        <span class="type-tag">uppercase</span>
+        <span class="type-tag">badges · section labels · table headers</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-specimen" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--secondary);line-height:1.6">agent.run({ task: "summarise_inbox", limit: 50, dry_run: false })</div>
+      <div class="type-tags">
+        <span class="type-tag highlight">mono</span>
+        <span class="type-tag">JetBrains Mono 400</span>
+        <span class="type-tag">13px / 1.6</span>
+        <span class="type-tag">logs · traces · config values</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SPACING -->
+  <section class="section" id="spacing">
+    <div class="section-header">
+      <h2 class="section-title">Spacing</h2>
+      <p class="section-desc">8pt grid. All padding, margin, and gap values are multiples of 4px. Named tokens map to their semantic contexts.</p>
+    </div>
+
+    <div class="spacing-list">
+      <div class="spacing-row">
+        <span class="spacing-token">--spacing-xs</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:4px"></div></div>
+        <span class="spacing-px">4px · xs</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-token">--spacing-sm</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:8px"></div></div>
+        <span class="spacing-px">8px · sm</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-token">--spacing-node-gap</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:16px"></div></div>
+        <span class="spacing-px">16px · node gap</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-token">--spacing-md</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:16px"></div></div>
+        <span class="spacing-px">16px · md</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-token">--spacing-card-padding</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:24px"></div></div>
+        <span class="spacing-px">24px · card padding</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-token">--spacing-gutter</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:24px"></div></div>
+        <span class="spacing-px">24px · gutter</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-token">--spacing-lg</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:24px"></div></div>
+        <span class="spacing-px">24px · lg</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-token">--spacing-xl</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:48px"></div></div>
+        <span class="spacing-px">48px · xl · section separation</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-token">--spacing-2xl</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:64px"></div></div>
+        <span class="spacing-px">64px · 2xl · page margin (desktop)</span>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-md);padding:20px 24px">
+      <p style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--outline);margin-bottom:16px">Semantic uses</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">
+        <div style="font-size:12px;color:var(--on-surface-variant)"><span style="font-family:'JetBrains Mono',monospace;color:var(--outline)">card-padding</span><br>Internal card breathing room</div>
+        <div style="font-size:12px;color:var(--on-surface-variant)"><span style="font-family:'JetBrains Mono',monospace;color:var(--outline)">node-gap</span><br>Workflow canvas node spacing</div>
+        <div style="font-size:12px;color:var(--on-surface-variant)"><span style="font-family:'JetBrains Mono',monospace;color:var(--outline)">gutter</span><br>Column gutter in content grid</div>
+        <div style="font-size:12px;color:var(--on-surface-variant)"><span style="font-family:'JetBrains Mono',monospace;color:var(--outline)">xl (48px)</span><br>Logical group separation</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- RADIUS -->
+  <section class="section" id="radius">
+    <div class="section-header">
+      <h2 class="section-title">Radius</h2>
+      <p class="section-desc">Low radius throughout. Modern but structured — never soft enough to feel consumer. Do not mix radius levels within a single component.</p>
+    </div>
+
+    <div class="radius-grid">
+      <div class="radius-item">
+        <div class="radius-box" style="width:56px;height:56px;border-radius:4px"></div>
+        <div class="radius-meta">
+          <span class="radius-name">sm · 4px</span>
+          <span class="radius-val">--rounded-sm</span>
+          <div style="font-size:10px;color:var(--outline);margin-top:4px;text-align:center">checkboxes<br>code tags</div>
+        </div>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="width:56px;height:56px;border-radius:8px"></div>
+        <div class="radius-meta">
+          <span class="radius-name">DEFAULT · 8px</span>
+          <span class="radius-val">--rounded</span>
+          <div style="font-size:10px;color:var(--outline);margin-top:4px;text-align:center">buttons<br>inputs · tags</div>
+        </div>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="width:56px;height:56px;border-radius:12px"></div>
+        <div class="radius-meta">
+          <span class="radius-name">md · 12px</span>
+          <span class="radius-val">--rounded-md</span>
+          <div style="font-size:10px;color:var(--outline);margin-top:4px;text-align:center">cards · panels<br>workflow nodes</div>
+        </div>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="width:56px;height:56px;border-radius:16px"></div>
+        <div class="radius-meta">
+          <span class="radius-name">lg · 16px</span>
+          <span class="radius-val">--rounded-lg</span>
+          <div style="font-size:10px;color:var(--outline);margin-top:4px;text-align:center">modals<br>drawer panels</div>
+        </div>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="width:56px;height:56px;border-radius:24px"></div>
+        <div class="radius-meta">
+          <span class="radius-name">xl · 24px</span>
+          <span class="radius-val">--rounded-xl</span>
+          <div style="font-size:10px;color:var(--outline);margin-top:4px;text-align:center">hero cards<br>marketing containers</div>
+        </div>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="width:72px;height:32px;border-radius:9999px"></div>
+        <div class="radius-meta">
+          <span class="radius-name">full · 9999px</span>
+          <span class="radius-val">--rounded-full</span>
+          <div style="font-size:10px;color:var(--outline);margin-top:4px;text-align:center">badges · pills<br>toggles</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- MOTION -->
+  <section class="section" id="motion">
+    <div class="section-header">
+      <h2 class="section-title">Motion</h2>
+      <p class="section-desc">Functional motion only. All interactive transitions: 150–200ms ease-out. Glow effects and flow animations signal live activity, never decoration.</p>
+    </div>
+
+    <div class="motion-row">
+      <span class="motion-label">Default ease</span>
+      <div class="motion-track" id="ease-track" onclick="playMotion(this,'ease-anim')" title="Click to preview">
+        <div class="motion-thumb" id="ease-thumb"></div>
+      </div>
+      <div class="motion-meta"><span class="motion-value">cubic-bezier(0.16, 1, 0.3, 1)</span><br><span style="font-size:10px;color:var(--outline)">--ease · click to preview</span></div>
+    </div>
+    <div class="motion-row">
+      <span class="motion-label">Button hover</span>
+      <div style="display:flex;align-items:center;gap:10px;flex:1">
+        <button style="background:linear-gradient(135deg,#00D4C4,#2563FF,#7B3CFF);color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all 200ms cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.opacity='0.88';this.style.boxShadow='0 4px 16px rgba(37,99,255,0.35)'" onmouseout="this.style.opacity='1';this.style.boxShadow='none'" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">Start building</button>
+        <span style="font-size:12px;color:var(--on-surface-variant)">Hover to preview</span>
+      </div>
+      <div class="motion-meta"><span class="motion-value">200ms ease-out</span><br><span style="font-size:10px;color:var(--outline)">opacity · box-shadow · scale(0.98)</span></div>
+    </div>
+    <div class="motion-row">
+      <span class="motion-label">Running pulse</span>
+      <div style="flex:1;display:flex;align-items:center;gap:10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--primary);animation:pulse 1.5s ease infinite;flex-shrink:0"></div>
+        <span style="font-size:12px;color:var(--primary);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;font-size:11px">Running</span>
+      </div>
+      <div class="motion-meta"><span class="motion-value">1.5s ease infinite</span><br><span style="font-size:10px;color:var(--outline)">badge dot · running state only</span></div>
+    </div>
+    <div class="motion-row">
+      <span class="motion-label">Flow sweep</span>
+      <div style="flex:1">
+        <div style="height:3px;border-radius:9999px;background:linear-gradient(90deg,transparent,#00D4C4,#2563FF,#7B3CFF,transparent);background-size:200% 100%;animation:flow 2s linear infinite"></div>
+      </div>
+      <div class="motion-meta"><span class="motion-value">2s linear infinite</span><br><span style="font-size:10px;color:var(--outline)">workflow connectors · loaders</span></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+function copyHex(el) {
+  const hex = el.dataset.hex;
+  navigator.clipboard.writeText(hex).then(() => {
+    el.classList.add('copied');
+    const toast = document.getElementById('copy-toast');
+    toast.textContent = 'Copied ' + hex;
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); el.classList.remove('copied'); }, 1800);
+  });
+}
+
+function playMotion(track, id) {
+  const thumb = track.querySelector('.motion-thumb');
+  thumb.style.transition = 'none';
+  thumb.style.left = '4px';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      thumb.style.transition = 'left 600ms cubic-bezier(0.16,1,0.3,1)';
+      thumb.style.left = 'calc(100% - 20px)';
+      setTimeout(() => {
+        thumb.style.transition = 'none';
+        thumb.style.left = '4px';
+      }, 900);
+    });
+  });
+}
+
+const tocItems = document.querySelectorAll('.toc-item');
+const sections = document.querySelectorAll('section[id]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocItems.forEach(t => t.classList.toggle('active', t.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, { threshold: 0.2, rootMargin: '-40px 0px -50% 0px' });
+sections.forEach(s => observer.observe(s));
+
+let isLight = false;
+const moonIcon = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M17 11.5A7 7 0 1 1 8.5 3 5.5 5.5 0 0 0 17 11.5z"/></svg>`;
+const sunIcon = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="4"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.9 4.9l1.4 1.4M13.7 13.7l1.4 1.4M4.9 15.1l1.4-1.4M13.7 6.3l1.4-1.4"/></svg>`;
+function toggleTheme() {
+  isLight = !isLight;
+  document.getElementById('theme-css').href = isLight ? 'tokens-light.css' : 'tokens.css';
+  document.getElementById('theme-label').textContent = isLight ? 'Dark' : 'Light';
+  document.getElementById('theme-icon').outerHTML = isLight ? moonIcon.replace('id="theme-icon"','') : sunIcon.replace('id="theme-icon"','');
+  document.getElementById('theme-btn').querySelector('svg').id = 'theme-icon';
+}
+</script>
+</body>
+</html>

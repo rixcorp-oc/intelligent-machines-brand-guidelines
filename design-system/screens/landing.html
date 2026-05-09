@@ -169,6 +169,7 @@ footer{border-top:1px solid var(--outline-variant);padding:32px 40px;display:fle
     <a class="nav-link" href="#features">Product</a>
     <a class="nav-link" href="#how-it-works">How it works</a>
     <a class="nav-link" href="#preview">Preview</a>
+    <a class="nav-link" href="#architecture">Architecture</a>
     <a class="nav-link" href="#">Pricing</a>
     <a class="nav-link" href="#">Docs</a>
   </div>
@@ -422,6 +423,118 @@ footer{border-top:1px solid var(--outline-variant);padding:32px 40px;display:fle
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SELF-IMPROVING HARNESS -->
+<section id="architecture">
+  <div class="sec-header">
+    <div class="sec-label teal">Under the hood</div>
+    <h2 class="sec-title">Agents that improve their own workflows</h2>
+    <p class="sec-sub">Most automation breaks in production because the harness — the prompts, tools, and orchestration around the model — is hand-built once and never evolves. intelligent-machines closes that loop automatically.</p>
+  </div>
+
+  <!-- Harness explainer callout -->
+  <div style="background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-lg);padding:28px 32px;margin-bottom:32px;display:flex;gap:24px;align-items:flex-start;max-width:860px;margin-left:auto;margin-right:auto">
+    <div style="width:40px;height:40px;border-radius:var(--rounded-md);background:rgba(0,212,196,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:600;color:var(--on-surface);margin-bottom:6px;letter-spacing:-0.01em">What is a harness?</div>
+      <p style="font-size:14px;color:var(--on-surface-variant);line-height:1.65;margin:0">The model is the engine. The harness is the whole vehicle — the system prompt, tools, memory, orchestration, evaluation logic, and retry behaviour that make the model actually useful in your specific workflow. Most agents look impressive in demos and break in production because their harness was engineered by hand and never updated.</p>
+    </div>
+  </div>
+
+  <!-- Three-agent loop -->
+  <div style="max-width:860px;margin:0 auto 40px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--outline);text-align:center;margin-bottom:24px">The improvement loop</div>
+    <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:0">
+
+      <!-- Worker -->
+      <div style="background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-lg);padding:24px;text-align:center">
+        <div style="width:44px;height:44px;border-radius:var(--rounded-md);background:rgba(37,99,255,0.1);border:1px solid rgba(37,99,255,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M7.5 11L16.5 7M7.5 13L16.5 17"/></svg>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--on-surface);margin-bottom:6px">Worker Agent</div>
+        <div style="font-size:12px;color:var(--on-surface-variant);line-height:1.5">Executes the task using the current harness — tools, prompts, and orchestration</div>
+        <div style="margin-top:12px;font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--primary);background:rgba(37,99,255,0.08);padding:3px 10px;border-radius:var(--rounded-full);display:inline-block">Tries the task</div>
+      </div>
+
+      <!-- Arrow 1 -->
+      <div style="display:flex;flex-direction:column;align-items:center;padding:0 12px;gap:6px">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--outline)" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <span style="font-size:10px;color:var(--outline);white-space:nowrap">result</span>
+      </div>
+
+      <!-- Evaluator -->
+      <div style="background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-lg);padding:24px;text-align:center">
+        <div style="width:44px;height:44px;border-radius:var(--rounded-md);background:rgba(0,212,196,0.1);border:1px solid rgba(0,212,196,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14l4-5 3 3 3-6 4 4"/><circle cx="20" cy="14" r="2"/></svg>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--on-surface);margin-bottom:6px">Evaluator Agent</div>
+        <div style="font-size:12px;color:var(--on-surface-variant);line-height:1.5">Reviews what happened, scores the result, and identifies exactly what went wrong</div>
+        <div style="margin-top:12px;font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--secondary);background:rgba(0,212,196,0.08);padding:3px 10px;border-radius:var(--rounded-full);display:inline-block">Finds failures</div>
+      </div>
+
+      <!-- Arrow 2 -->
+      <div style="display:flex;flex-direction:column;align-items:center;padding:0 12px;gap:6px">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--outline)" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <span style="font-size:10px;color:var(--outline);white-space:nowrap">critique</span>
+      </div>
+
+      <!-- Evolution -->
+      <div style="background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-lg);padding:24px;text-align:center">
+        <div style="width:44px;height:44px;border-radius:var(--rounded-md);background:rgba(123,60,255,0.1);border:1px solid rgba(123,60,255,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--tertiary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 7.38 16.75"/><path d="M12 22a10 10 0 0 1-7.38-16.75"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--on-surface);margin-bottom:6px">Evolution Agent</div>
+        <div style="font-size:12px;color:var(--on-surface-variant);line-height:1.5">Updates the harness — prompts, tool usage, orchestration — based on what failed</div>
+        <div style="margin-top:12px;font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--tertiary);background:rgba(123,60,255,0.08);padding:3px 10px;border-radius:var(--rounded-full);display:inline-block">Improves harness</div>
+      </div>
+
+    </div>
+
+    <!-- Loop-back arrow -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;padding:10px 0">
+      <div style="height:1px;flex:1;background:var(--outline-variant)"></div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--outline)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+        Worker tries again with an improved harness
+      </div>
+      <div style="height:1px;flex:1;background:var(--outline-variant)"></div>
+    </div>
+  </div>
+
+  <!-- What evolves + meta-evolution -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:860px;margin:0 auto">
+    <div style="background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-lg);padding:24px">
+      <div style="font-size:13px;font-weight:600;color:var(--on-surface);margin-bottom:14px">What the loop can evolve</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--on-surface-variant)">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--secondary);flex-shrink:0"></div>System prompts and task framing
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--on-surface-variant)">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--secondary);flex-shrink:0"></div>Tool selection and usage patterns
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--on-surface-variant)">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--secondary);flex-shrink:0"></div>Orchestration and step sequencing
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--on-surface-variant)">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--secondary);flex-shrink:0"></div>Observation structure and memory
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--on-surface-variant)">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--secondary);flex-shrink:0"></div>Retry logic and error handling
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--surface-container);border:1px solid var(--outline-variant);border-radius:var(--rounded-lg);padding:24px">
+      <div style="font-size:13px;font-weight:600;color:var(--on-surface);margin-bottom:8px">The bigger idea</div>
+      <p style="font-size:13px;color:var(--on-surface-variant);line-height:1.65;margin-bottom:12px">The loop doesn't just improve one workflow. Over time, intelligent-machines learns which evolution strategies work fastest — and applies them when you deploy a new agent into a new domain.</p>
+      <p style="font-size:13px;color:var(--on-surface-variant);line-height:1.65">You define the task. You define what success looks like. The system handles the rest.</p>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--outline-variant);font-size:12px;color:var(--outline);line-height:1.6;font-style:italic">"The best agent may not be the one with the best base model. It may be the one that can improve its own harness fastest."</div>
     </div>
   </div>
 </section>

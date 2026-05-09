@@ -1,0 +1,96 @@
+/* intelligent-machines — Light Theme Design Tokens (Warm)
+   Surface palette derived from Birchline's ivory/oat/slate scale.
+   Accent triad adjusted for WCAG AA contrast on warm light backgrounds. */
+
+:root {
+  /* Background — ivory base */
+  --background: #FAF9F5;
+  --on-background: #141413;
+
+  /* Surfaces — oat/warm-gray depth stack */
+  --surface: #FFFFFF;
+  --surface-dim: #F0EEE6;
+  --surface-bright: #FFFFFF;
+  --surface-container-lowest: #FFFFFF;
+  --surface-container-low: #F0EEE6;
+  --surface-container: #E3DACC;
+  --surface-container-high: #D1CFC5;
+  --surface-container-highest: #C4C1B6;
+  --surface-variant: #D1CFC5;
+
+  /* Text */
+  --on-surface: #141413;
+  --on-surface-variant: #3D3D3A;
+  --inverse-surface: #2A2926;
+  --inverse-on-surface: #FAF9F5;
+
+  /* Borders */
+  --outline: #87867F;
+  --outline-variant: #D1CFC5;
+  --surface-tint: #1A4FE8;
+
+  /* Primary — electric blue */
+  --primary: #1A4FE8;
+  --on-primary: #FFFFFF;
+  --primary-container: #DDE8FF;
+  --on-primary-container: #001079;
+  --inverse-primary: #7BA5FF;
+  --primary-fixed: #4D7FFF;
+  --primary-fixed-dim: #1A4FE8;
+  --on-primary-fixed: #000F3D;
+  --on-primary-fixed-variant: #0A2899;
+
+  /* Secondary — teal */
+  --secondary: #007B6E;
+  --on-secondary: #FFFFFF;
+  --secondary-container: #C8F5EF;
+  --on-secondary-container: #002520;
+  --secondary-fixed: #33DDCF;
+  --secondary-fixed-dim: #00D4C4;
+  --on-secondary-fixed: #001F1C;
+  --on-secondary-fixed-variant: #006B62;
+
+  /* Tertiary — violet */
+  --tertiary: #5E18E0;
+  --on-tertiary: #FFFFFF;
+  --tertiary-container: #EBE2FF;
+  --on-tertiary-container: #1B0055;
+  --tertiary-fixed: #9966FF;
+  --tertiary-fixed-dim: #7B3CFF;
+  --on-tertiary-fixed: #130040;
+  --on-tertiary-fixed-variant: #3A0099;
+
+  /* Semantic — warm muted tones matching the palette feel */
+  --error: #B04A4A;
+  --on-error: #FFFFFF;
+  --error-container: #F5DDD9;
+  --on-error-container: #3D0A0A;
+  --success: #788C5D;
+  --warning: #C78E3F;
+
+  /* Gradients — azure replaces teal; travels 205°→224°→263° without crossing cold cyan */
+  --gradient-primary: linear-gradient(135deg, #1A9EFF 0%, #2563FF 50%, #7B3CFF 100%);
+  --gradient-flow: linear-gradient(90deg, #1A9EFF, #2563FF, #7B3CFF);
+
+  /* Radius */
+  --rounded-sm: 4px;
+  --rounded: 8px;
+  --rounded-md: 12px;
+  --rounded-lg: 16px;
+  --rounded-xl: 24px;
+  --rounded-full: 9999px;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 48px;
+  --spacing-2xl: 64px;
+  --spacing-gutter: 24px;
+  --spacing-card-padding: 24px;
+  --spacing-node-gap: 16px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
