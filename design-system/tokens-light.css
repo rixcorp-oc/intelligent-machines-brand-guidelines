@@ -1,13 +1,14 @@
-/* intelligent-machines — Light Theme Design Tokens (Warm)
-   Surface palette derived from Birchline's ivory/oat/slate scale.
-   Accent triad adjusted for WCAG AA contrast on warm light backgrounds. */
+/* intelligent-machines — Light Theme Design Tokens
+   Full Birchline palette mapped to IM token structure.
+   Dark theme (tokens.css) stays electric blue/teal/violet.
+   Light theme uses clay/slate/ivory/oat with warm accent triad. */
 
 :root {
-  /* Background — ivory base */
+  /* Background — Birchline ivory */
   --background: #FAF9F5;
   --on-background: #141413;
 
-  /* Surfaces — oat/warm-gray depth stack */
+  /* Surfaces — Birchline oat/warm-gray depth stack */
   --surface: #FFFFFF;
   --surface-dim: #F0EEE6;
   --surface-bright: #FFFFFF;
@@ -15,52 +16,52 @@
   --surface-container-low: #F0EEE6;
   --surface-container: #E3DACC;
   --surface-container-high: #D1CFC5;
-  --surface-container-highest: #C4C1B6;
+  --surface-container-highest: #C4C0B8;
   --surface-variant: #D1CFC5;
 
-  /* Text */
+  /* Text — Birchline slate scale */
   --on-surface: #141413;
   --on-surface-variant: #3D3D3A;
-  --inverse-surface: #2A2926;
+  --inverse-surface: #1C1B19;
   --inverse-on-surface: #FAF9F5;
 
-  /* Borders */
+  /* Borders — Birchline gray scale */
   --outline: #87867F;
   --outline-variant: #D1CFC5;
-  --surface-tint: #1A4FE8;
+  --surface-tint: #D97757;
 
-  /* Primary — electric blue */
-  --primary: #1A4FE8;
+  /* Primary — Birchline clay */
+  --primary: #D97757;
   --on-primary: #FFFFFF;
-  --primary-container: #DDE8FF;
-  --on-primary-container: #001079;
-  --inverse-primary: #7BA5FF;
-  --primary-fixed: #4D7FFF;
-  --primary-fixed-dim: #1A4FE8;
-  --on-primary-fixed: #000F3D;
-  --on-primary-fixed-variant: #0A2899;
+  --primary-container: #FAE8DE;
+  --on-primary-container: #4A1800;
+  --inverse-primary: #E8A882;
+  --primary-fixed: #E8956A;
+  --primary-fixed-dim: #D97757;
+  --on-primary-fixed: #2D0D00;
+  --on-primary-fixed-variant: #7A3318;
 
-  /* Secondary — teal */
-  --secondary: #007B6E;
+  /* Secondary — Birchline info blue */
+  --secondary: #5C7CA3;
   --on-secondary: #FFFFFF;
-  --secondary-container: #C8F5EF;
-  --on-secondary-container: #002520;
-  --secondary-fixed: #33DDCF;
-  --secondary-fixed-dim: #00D4C4;
-  --on-secondary-fixed: #001F1C;
-  --on-secondary-fixed-variant: #006B62;
+  --secondary-container: #DDEAF8;
+  --on-secondary-container: #0D2640;
+  --secondary-fixed: #7B98BC;
+  --secondary-fixed-dim: #5C7CA3;
+  --on-secondary-fixed: #041528;
+  --on-secondary-fixed-variant: #2E4E6E;
 
-  /* Tertiary — violet */
-  --tertiary: #5E18E0;
+  /* Tertiary — muted sage, echoes Birchline success */
+  --tertiary: #788C5D;
   --on-tertiary: #FFFFFF;
-  --tertiary-container: #EBE2FF;
-  --on-tertiary-container: #1B0055;
-  --tertiary-fixed: #9966FF;
-  --tertiary-fixed-dim: #7B3CFF;
-  --on-tertiary-fixed: #130040;
-  --on-tertiary-fixed-variant: #3A0099;
+  --tertiary-container: #E5EFDA;
+  --on-tertiary-container: #1A2E0A;
+  --tertiary-fixed: #94A87A;
+  --tertiary-fixed-dim: #788C5D;
+  --on-tertiary-fixed: #0C1B03;
+  --on-tertiary-fixed-variant: #4A6035;
 
-  /* Semantic — warm muted tones matching the palette feel */
+  /* Semantic — Birchline danger / warning / success */
   --error: #B04A4A;
   --on-error: #FFFFFF;
   --error-container: #F5DDD9;
@@ -68,9 +69,9 @@
   --success: #788C5D;
   --warning: #C78E3F;
 
-  /* Gradients — azure replaces teal; travels 205°→224°→263° without crossing cold cyan */
-  --gradient-primary: linear-gradient(135deg, #1A9EFF 0%, #2563FF 50%, #7B3CFF 100%);
-  --gradient-flow: linear-gradient(90deg, #1A9EFF, #2563FF, #7B3CFF);
+  /* Gradients — clay → info blue → sage, all warm-toned */
+  --gradient-primary: linear-gradient(135deg, #D97757 0%, #9C5E7E 100%);
+  --gradient-flow: linear-gradient(90deg, #D97757, #9C5E7E);
 
   /* Radius */
   --rounded-sm: 4px;
